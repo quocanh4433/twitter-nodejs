@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { UserVerifyStatus } from '~/constants/enums';
 
-
 interface IUser {
   _id?: ObjectId;
   name: string;

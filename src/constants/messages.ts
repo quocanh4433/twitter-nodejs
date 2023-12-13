@@ -21,5 +21,5 @@ export const USERS_MESSAGES = {
   DATE_OF_BIRTH_IS_REQUIRED: 'Date of birth is required',
   LOGIN_SUCCESS: 'Login success',
   REGISTER_SUCCESS: 'Register success',
-  USER_NOT_FOUND: 'User not found'
+  EMAIL_OR_PASSWORD_IS_INCORRECT: 'Email or password is incorrect'
 } as const;

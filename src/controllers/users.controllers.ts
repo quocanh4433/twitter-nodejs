@@ -13,7 +13,7 @@ export const loginController = async (req: Request, res: Response) => {
   res.json({
     message: USERS_MESSAGES.LOGIN_SUCCESS,
     result
-  })
+  });
 };
 
 export const registerController = async (req: Request<ParamsDictionary, any, IRegisterReqBody>, res: Response) => {

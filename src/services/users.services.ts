@@ -1,12 +1,13 @@
 import { User } from '~/models/schemas/User.schema';
 import databaseService from './data.servieces';
-import { IRegisterReqBody } from '~/models/requests/User.request';
+import { RegisterReqBody } from '~/models/requests/User.request';
 import { hashPassword } from '~/utils/crypto';
 import { signToken } from '~/utils/jwt';
 import { TokenType } from '~/constants/enums';
 import RefreshToken from '~/models/schemas/RequestToken.schema';
 import { ObjectId } from 'mongodb';
 import { config } from 'dotenv';
+import { USERS_MESSAGES } from '~/constants/messages';
 
 config();
 
@@ -29,7 +30,7 @@ class UsersService {
     return Promise.all([this.signAccessToken(user_id), this.signRefreshToken(user_id)]);
   }
 
-  async regiser(payload: IRegisterReqBody) {
+  async regiser(payload: RegisterReqBody) {
     const rersult = await databaseService.users.insertOne(
       new User({
         ...payload,
@@ -54,6 +55,13 @@ class UsersService {
     return {
       access_token,
       refresh_token
+    };
+  }
+
+  async logout(refresh_token: string) {
+    await databaseService.refreshTokens.deleteOne({ token: refresh_token });
+    return {
+      message: USERS_MESSAGES.LOGOUT_SUCCESS
     };
   }
 

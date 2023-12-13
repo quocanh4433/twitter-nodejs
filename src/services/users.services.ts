@@ -20,6 +20,10 @@ class UsersService {
     });
   }
 
+  private signAccessAndRefreshToken(user_id: string) {
+    return Promise.all([this.signAccessToken(user_id), this.signRefreshToken(user_id)]);
+  }
+
   async regiser(payload: IRegisterReqBody) {
     const rersult = await databaseService.users.insertOne(
       new User({
@@ -30,11 +34,16 @@ class UsersService {
     );
 
     const user_id = rersult.insertedId.toString();
-    const [access_token, refresh_token] = await Promise.all([
-      this.signAccessToken(user_id),
-      this.signRefreshToken(user_id)
-    ]);
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id);
 
+    return {
+      access_token,
+      refresh_token
+    };
+  }
+
+  async login(user_id: string) {
+    const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id);
     return {
       access_token,
       refresh_token

@@ -9,6 +9,15 @@ export interface RegisterReqBody {
   date_of_birth: string;
 }
 
+export interface LoginReqBody {
+  email: string;
+  password: string;
+}
+
+export interface VerifyEmailReqBody {
+  email_verify_token: string;
+}
+
 export interface LogoutReqBody {
   refresh_token: string;
 }

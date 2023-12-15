@@ -6,13 +6,13 @@ config();
 
 export const signToken = ({
   payload,
-  privateKey = process.env.JWT_KEY as string,
+  privateKey,
   options = {
     algorithm: 'HS256'
   }
 }: {
   payload: string | Buffer | object;
-  privateKey?: string;
+  privateKey: string;
   options?: SignOptions;
 }) => {
   return new Promise<string>((resolve, reject) => {
@@ -25,13 +25,7 @@ export const signToken = ({
   });
 };
 
-export const verifyToken = ({
-  token,
-  secretOrPublicKey = process.env.JWT_KEY as string
-}: {
-  token: string;
-  secretOrPublicKey?: string;
-}) => {
+export const verifyToken = ({ token, secretOrPublicKey }: { token: string; secretOrPublicKey: string }) => {
   return new Promise<TokenPayload>((resovle, reject) => {
     jwt.verify(token, secretOrPublicKey, (error, decode) => {
       if (error) {

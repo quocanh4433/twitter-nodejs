@@ -1,8 +1,10 @@
-import { Request, Response, json } from 'express';
+import { Request, Response } from 'express';
 import {
+  ForgotPasswordReqBody,
   LoginReqBody,
   LogoutReqBody,
   RegisterReqBody,
+  ResetPasswordReqBody,
   TokenPayload,
   VerifyEmailReqBody
 } from '~/models/requests/User.request';
@@ -83,6 +85,40 @@ export const resendVerifyEmailTokenController = async (req: Request, res: Respon
     });
   }
 
-  const result = await usersService.resendVerifyEmailToken(user_id);
+  const result = await usersService.resendVerifyEmail(user_id);
   return res.json(result);
+};
+
+export const forgotPasswordController = async (
+  req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
+  res: Response
+) => {
+  const { _id } = req.user as User;
+  const result = await usersService.forgotPassword((_id as ObjectId)?.toString());
+  res.json(result);
+};
+
+export const verifyForgotPasswordController = async (req: Request, res: Response) => {
+  res.json({
+    message: USERS_MESSAGES.VERIFY_FORGOT_PASSWORD_SUCCESS
+  });
+};
+
+export const resetPasswordController = async (
+  req: Request<ParamsDictionary, any, ResetPasswordReqBody>,
+  res: Response
+) => {
+  const { password } = req.body;
+  const { user_id } = req.decode_forgot_password_token as TokenPayload;
+  const result = await usersService.resetPassword({ password, user_id });
+  res.json(result);
+};
+
+export const getMeController = async (req: Request, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload;
+  const result = await usersService.getMe(user_id);
+  res.json({
+    message: USERS_MESSAGES.GET_FROFILE_SUCCESS,
+    result
+  });
 };

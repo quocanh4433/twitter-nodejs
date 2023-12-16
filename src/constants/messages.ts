@@ -32,5 +32,11 @@ export const USERS_MESSAGES = {
   USER_NOT_FOUND: 'User not found',
   EMAIL_ALREADY_VERIFIED_BEFORE: 'Email already verified before',
   EMAIL_VERIFY_SUCCESS: 'Email verify success',
-  RESEND_VERIFY_EMAIL_SUCCESS: 'Resend verify email success'
+  RESEND_VERIFY_EMAIL_SUCCESS: 'Resend verify email success',
+  CHECK_EMAIL_TO_FORGOT_PASSWORD_SUCCESS: 'Check email to forgot password success',
+  FORGET_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password token is reuqired',
+  VERIFY_FORGOT_PASSWORD_SUCCESS: 'Verify forgot password success',
+  FORGOT_PASSWORD_TOKEN_INVALID: 'Forgot password token invalid',
+  RESET_PASSWORD_SUCCESS: 'Reset pasword success',
+  GET_FROFILE_SUCCESS: 'Get frofile success'
 } as const;

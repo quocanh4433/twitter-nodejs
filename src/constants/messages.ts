@@ -40,4 +40,15 @@ export const USERS_MESSAGES = {
   RESET_PASSWORD_SUCCESS: 'Reset pasword success',
   GET_FROFILE_SUCCESS: 'Get frofile success',
   USER_NOT_VERIFIED: 'User not verified',
+  BIO_MUST_BE_STRING: 'Bio must be a string',
+  BIO_LENGTH: 'Bio length must be from 1 to 200',
+  LOCATION_MUST_BE_STRING: 'Location must be a string',
+  LOCATION_LENGTH: 'Location length must be from 1 to 200',
+  WEBSITE_MUST_BE_STRING: 'Website must be a string',
+  WEBSITE_LENGTH: 'Website length must be from 1 to 200',
+  USERNAME_MUST_BE_STRING: 'Username must be a string',
+  USERNAME_LENGTH: 'Username length must be from 1 to 50',
+  IMAGE_URL_MUST_BE_STRING: 'Avatar must be a string',
+  IMAGE_URL_LENGTH: 'Avatar length must be from 1 to 200',
+  UPDATE_ME_SUCCESS: 'Update my profile success'
 } as const;

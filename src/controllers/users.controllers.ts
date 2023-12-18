@@ -6,6 +6,7 @@ import {
   RegisterReqBody,
   ResetPasswordReqBody,
   TokenPayload,
+  UpdateMeReqBody,
   VerifyEmailReqBody
 } from '~/models/requests/User.request';
 import { ParamsDictionary } from 'express-serve-static-core';
@@ -127,6 +128,17 @@ export const getMeController = async (req: Request, res: Response) => {
   });
 };
 
-export const updateMeController = async (req: Request, res: Response) => {
-  res.json({});
+export const updateMeController = async (req: Request<ParamsDictionary, any, UpdateMeReqBody>, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload;
+  const { body } = req;
+  const user = await usersService.updateMe(user_id, body);
+  if (!user) {
+    return res.status(HTTP_STATUS.NOT_FOUND).json({
+      message: USERS_MESSAGES.USER_NOT_FOUND
+    });
+  }
+  res.json({
+    message: USERS_MESSAGES.UPDATE_ME_SUCCESS,
+    result: user
+  });
 };

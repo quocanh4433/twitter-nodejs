@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import {
   ForgotPasswordReqBody,
+  GetProfileReqParam,
   LoginReqBody,
   LogoutReqBody,
   RegisterReqBody,
@@ -139,6 +140,20 @@ export const updateMeController = async (req: Request<ParamsDictionary, any, Upd
   }
   res.json({
     message: USERS_MESSAGES.UPDATE_ME_SUCCESS,
+    result: user
+  });
+};
+
+export const getProfileController = async (req: Request<GetProfileReqParam>, res: Response) => {
+  const { username } = req.params;
+  const user = await usersService.getProfile(username);
+  if (!user) {
+    return res.status(HTTP_STATUS.NOT_FOUND).json({
+      message: USERS_MESSAGES.USER_NOT_FOUND
+    });
+  }
+  res.json({
+    message: USERS_MESSAGES.GET_FROFILE_SUCCESS,
     result: user
   });
 };

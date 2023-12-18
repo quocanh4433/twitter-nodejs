@@ -50,6 +50,15 @@ class UsersService {
     });
   }
 
+  private projecttionSchema = {
+    password: 0,
+    email_verify_token: 0,
+    forgot_password_token: 0,
+    verify: 0,
+    created_at: 0,
+    updated_at: 0
+  };
+
   async regiser(payload: RegisterReqBody) {
     const user_id = new ObjectId();
     const verify = UserVerifyStatus.Unverified;
@@ -60,6 +69,7 @@ class UsersService {
     await databaseService.users.insertOne(
       new User({
         ...payload,
+        username: `user${user_id.toString()}`,
         _id: user_id,
         date_of_birth: new Date(payload.date_of_birth),
         password: hashPassword(payload.password),
@@ -188,11 +198,7 @@ class UsersService {
     const user = await databaseService.users.findOne(
       { _id: new ObjectId(user_id) },
       {
-        projection: {
-          password: 0,
-          email_verify_token: 0,
-          forgot_password_token: 0
-        }
+        projection:  this.projecttionSchema
       }
     );
 
@@ -222,11 +228,17 @@ class UsersService {
       },
       {
         returnDocument: 'after',
-        projection: {
-          password: 0,
-          email_verify_token: 0,
-          forgot_password_token: 0
-        }
+        projection: this.projecttionSchema
+      }
+    );
+    return user;
+  }
+
+  async getProfile(username: string) {
+    const user = await databaseService.users.findOne(
+      { username },
+      {
+        projection: this.projecttionSchema
       }
     );
     return user;

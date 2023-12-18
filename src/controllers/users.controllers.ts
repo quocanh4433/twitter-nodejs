@@ -20,7 +20,8 @@ import { UserVerifyStatus } from '~/constants/enums';
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   const user = req.user as User;
   const user_id = user._id as ObjectId;
-  const result = await usersService.login(user_id.toString());
+  const verify = user.verify as UserVerifyStatus;
+  const result = await usersService.login({ user_id: user_id.toString(), verify });
   res.json({
     message: USERS_MESSAGES.LOGIN_SUCCESS,
     result
@@ -48,7 +49,7 @@ export const verifyEmailTokenController = async (
   req: Request<ParamsDictionary, any, VerifyEmailReqBody>,
   res: Response
 ) => {
-  const { user_id } = req.decode_verify_email_token as TokenPayload;
+  const { user_id, token } = req.decode_verify_email_token as TokenPayload;
   const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
 
   if (!user) {
@@ -71,7 +72,7 @@ export const verifyEmailTokenController = async (
 };
 
 export const resendVerifyEmailTokenController = async (req: Request, res: Response) => {
-  const { user_id } = req.decode_authorization as TokenPayload;
+  const { user_id, verify } = req.decode_authorization as TokenPayload;
   const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
   if (!user) {
     res.status(HTTP_STATUS.NOT_FOUND).json({
@@ -93,8 +94,11 @@ export const forgotPasswordController = async (
   req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
   res: Response
 ) => {
-  const { _id } = req.user as User;
-  const result = await usersService.forgotPassword((_id as ObjectId)?.toString());
+  const { _id, verify } = req.user as User;
+  const result = await usersService.forgotPassword({
+    user_id: (_id as ObjectId)?.toString(),
+    verify: verify as UserVerifyStatus
+  });
   res.json(result);
 };
 
@@ -121,4 +125,8 @@ export const getMeController = async (req: Request, res: Response) => {
     message: USERS_MESSAGES.GET_FROFILE_SUCCESS,
     result
   });
+};
+
+export const updateMeController = async (req: Request, res: Response) => {
+  res.json({});
 };

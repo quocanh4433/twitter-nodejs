@@ -8,9 +8,11 @@ import usersService from '~/services/users.services';
 import { hashPassword } from '~/utils/crypto';
 import { verifyToken } from '~/utils/jwt';
 import { validate } from '~/utils/validation';
-import { Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { capitalize } from '~/utils/helper';
 import { ObjectId } from 'mongodb';
+import { TokenPayload } from '~/models/requests/User.request';
+import { UserVerifyStatus } from '~/constants/enums';
 
 const passwordSchema: ParamSchema = {
   trim: true,
@@ -374,3 +376,17 @@ export const resetPasswordValidator = validate(
     ['body']
   )
 );
+
+export const verifiedUserValidator = (req: Request, res: Response, next: NextFunction) => {
+  const { verify } = req.decode_authorization as TokenPayload;
+  if (verify !== UserVerifyStatus.Verified) {
+    return next(
+      new ErrorWithStatus({
+        message: USERS_MESSAGES.USER_NOT_VERIFIED,
+        status: HTTP_STATUS.FORBIDDEN
+      })
+    );
+  }
+  next();
+};
+

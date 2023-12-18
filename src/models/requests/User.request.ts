@@ -1,6 +1,17 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { TokenType } from '~/constants/enums';
 
+export interface UpdateMeReqBody {
+  name?: string;
+  date_of_birth?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  username?: string;
+  avatar?: string;
+  cover_photo?: string;
+}
+
 export interface RegisterReqBody {
   name: string;
   email: string;

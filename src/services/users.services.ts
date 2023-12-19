@@ -4,12 +4,13 @@ import { RegisterReqBody, UpdateMeReqBody } from '~/models/requests/User.request
 import { hashPassword } from '~/utils/crypto';
 import { signToken } from '~/utils/jwt';
 import { TokenType, UserVerifyStatus } from '~/constants/enums';
-import RefreshToken from '~/models/schemas/RequestToken.schema';
+import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import { ObjectId } from 'mongodb';
 import { config } from 'dotenv';
 import { USERS_MESSAGES } from '~/constants/messages';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { ErrorWithStatus } from '~/models/Error';
+import Follower from '~/models/schemas/Follower.schema';
 
 config();
 
@@ -124,6 +125,9 @@ class UsersService {
       ])
     ]);
     const [access_token, refresh_token] = token;
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token })
+    );
     return {
       access_token,
       refresh_token
@@ -198,7 +202,7 @@ class UsersService {
     const user = await databaseService.users.findOne(
       { _id: new ObjectId(user_id) },
       {
-        projection:  this.projecttionSchema
+        projection: this.projecttionSchema
       }
     );
 
@@ -242,6 +246,51 @@ class UsersService {
       }
     );
     return user;
+  }
+
+  async follow(user_id: string, follwed_user_id: string) {
+    const follower = await databaseService.followers.findOne({
+      user_id: new ObjectId(user_id),
+      followed_user_id: new ObjectId(follwed_user_id)
+    });
+
+    if (!follower) {
+      await databaseService.followers.insertOne(
+        new Follower({
+          user_id: new ObjectId(user_id),
+          followed_user_id: new ObjectId(follwed_user_id),
+          created_at: new Date()
+        })
+      );
+      return {
+        message: USERS_MESSAGES.FOLLOW_SUCCESS
+      };
+    }
+    return {
+      message: USERS_MESSAGES.FOLLOWED
+    };
+  }
+
+  async unfollow(user_id: string, follwed_user_id: string) {
+    const follower = await databaseService.followers.findOne({
+      user_id: new ObjectId(user_id),
+      followed_user_id: new ObjectId(follwed_user_id)
+    });
+
+    if (!follower) {
+      return {
+        message: USERS_MESSAGES.UNFOLLOWED
+      };
+    }
+
+    await databaseService.followers.deleteOne({
+      user_id: new ObjectId(user_id),
+      followed_user_id: new ObjectId(follwed_user_id)
+    });
+
+    return {
+      message: USERS_MESSAGES.UNFOLLOW_SUCCESS
+    };
   }
 }
 

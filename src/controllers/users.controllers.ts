@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  FollowReqBody,
   ForgotPasswordReqBody,
   GetProfileReqParam,
   LoginReqBody,
@@ -7,6 +8,7 @@ import {
   RegisterReqBody,
   ResetPasswordReqBody,
   TokenPayload,
+  UnfollowReqParam,
   UpdateMeReqBody,
   VerifyEmailReqBody
 } from '~/models/requests/User.request';
@@ -156,4 +158,18 @@ export const getProfileController = async (req: Request<GetProfileReqParam>, res
     message: USERS_MESSAGES.GET_FROFILE_SUCCESS,
     result: user
   });
+};
+
+export const followController = async (req: Request<ParamsDictionary, any, FollowReqBody>, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload;
+  const { followed_user_id } = req.body;
+  const result = await usersService.follow(user_id, followed_user_id);
+  res.json(result);
+};
+
+export const unfollowController = async (req: Request<ParamsDictionary, any, UnfollowReqParam>, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload;
+  const { user_id: followed_user_id } = req.params;
+  const result = await usersService.unfollow(user_id, followed_user_id);
+  res.json(result);
 };

@@ -59,5 +59,6 @@ export const USERS_MESSAGES = {
   INVALID_USER_ID: 'Invalid user id',
   FOLLOWED: 'Followed',
   UNFOLLOWED: 'Unfollowed',
-  UNFOLLOW_SUCCESS: 'Unfollow success'
+  UNFOLLOW_SUCCESS: 'Unfollow success',
+  GMAIL_NOT_VERIFY: 'Gmail not verify'
 } as const;

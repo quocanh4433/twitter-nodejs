@@ -20,6 +20,9 @@ import { User } from '~/models/schemas/User.schema';
 import databaseService from '~/services/data.servieces';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { UserVerifyStatus } from '~/constants/enums';
+import { config } from 'dotenv';
+
+config();
 
 export const loginController = async (req: Request<ParamsDictionary, any, LoginReqBody>, res: Response) => {
   const user = req.user as User;
@@ -34,7 +37,7 @@ export const loginController = async (req: Request<ParamsDictionary, any, LoginR
 
 export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
   try {
-    const result = await usersService.regiser(req.body);
+    const result = await usersService.register(req.body);
     return res.json({ message: 'Register success', result });
   } catch (error) {
     return res.status(400).json({
@@ -172,4 +175,11 @@ export const unfollowController = async (req: Request<ParamsDictionary, any, Unf
   const { user_id: followed_user_id } = req.params;
   const result = await usersService.unfollow(user_id, followed_user_id);
   res.json(result);
+};
+
+export const oAuthController = async (req: Request, res: Response) => {
+  const { code } = req.query;
+  const result = await usersService.oauth(code as string);
+  const urlRedirect = `${process.env.CLIENT_REDIRECT_CALLBACK}?access_token=${result.access_token}&refresh_token=${result.refresh_token}&new_user=${result.newUser}&verify=${result.verify}`;
+  return res.redirect(urlRedirect);
 };

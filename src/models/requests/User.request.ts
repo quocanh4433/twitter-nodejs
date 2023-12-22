@@ -25,7 +25,7 @@ export interface GetProfileReqParam extends ParamsDictionary {
   username: string;
 }
 
-export interface UnfollowReqParam extends ParamsDictionary{
+export interface UnfollowReqParam extends ParamsDictionary {
   user_id: string;
 }
 

@@ -62,3 +62,7 @@ export const USERS_MESSAGES = {
   UNFOLLOW_SUCCESS: 'Unfollow success',
   GMAIL_NOT_VERIFY: 'Gmail not verify'
 } as const;
+
+export const MEDIAS_MESSAGE = {
+  UPLOAD_SUCCESS: 'Upload success'
+};

@@ -9,11 +9,11 @@ import { hashPassword } from '~/utils/crypto';
 import { verifyToken } from '~/utils/jwt';
 import { validate } from '~/utils/validation';
 import { NextFunction, Request, Response } from 'express';
-import { capitalize } from '~/utils/helper';
 import { ObjectId } from 'mongodb';
 import { TokenPayload } from '~/models/requests/User.request';
 import { UserVerifyStatus } from '~/constants/enums';
 import { REGEX_USERNAME } from '~/constants/regex';
+import { capitalize } from 'lodash';
 
 const passwordSchema: ParamSchema = {
   trim: true,

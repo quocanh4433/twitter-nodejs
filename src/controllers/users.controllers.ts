@@ -5,6 +5,7 @@ import {
   GetProfileReqParam,
   LoginReqBody,
   LogoutReqBody,
+  RefreshTokenReqBody,
   RegisterReqBody,
   ResetPasswordReqBody,
   TokenPayload,
@@ -125,6 +126,19 @@ export const resetPasswordController = async (
   res.json(result);
 };
 
+export const refreshTokenController = async (
+  req: Request<ParamsDictionary, any, RefreshTokenReqBody>,
+  res: Response
+) => {
+  const { refresh_token } = req.body;
+  const { user_id, verify } = req.decode_refresh_token as TokenPayload;
+  const result = await usersService.refreshToken({ user_id, verify, refresh_token });
+  res.json({
+    message: USERS_MESSAGES.REFRESH_TOKEN_SUCCESS,
+    result
+  });
+};
+
 export const getMeController = async (req: Request, res: Response) => {
   const { user_id } = req.decode_authorization as TokenPayload;
   const result = await usersService.getMe(user_id);
@@ -182,4 +196,11 @@ export const oAuthController = async (req: Request, res: Response) => {
   const result = await usersService.oauth(code as string);
   const urlRedirect = `${process.env.CLIENT_REDIRECT_CALLBACK}?access_token=${result.access_token}&refresh_token=${result.refresh_token}&new_user=${result.newUser}&verify=${result.verify}`;
   return res.redirect(urlRedirect);
+};
+
+export const changePasswordController = async (req: Request, res: Response) => {
+  const { user_id } = req.decode_authorization as TokenPayload;
+  const { password } = req.body;
+  const result = await usersService.changePassword(user_id, password);
+  res.json(result)
 };

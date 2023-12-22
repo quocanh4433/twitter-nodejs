@@ -60,7 +60,10 @@ export const USERS_MESSAGES = {
   FOLLOWED: 'Followed',
   UNFOLLOWED: 'Unfollowed',
   UNFOLLOW_SUCCESS: 'Unfollow success',
-  GMAIL_NOT_VERIFY: 'Gmail not verify'
+  GMAIL_NOT_VERIFY: 'Gmail not verify',
+  REFRESH_TOKEN_SUCCESS: 'Refresh Token Success',
+  OLD_PASSWORD_NOT_MATCH: 'Old password not match',
+  CHAGE_PASSWORD_SUCCESS: 'Change password success'
 } as const;
 
 export const MEDIAS_MESSAGE = {

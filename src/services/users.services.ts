@@ -378,6 +378,43 @@ class UsersService {
       message: USERS_MESSAGES.UNFOLLOW_SUCCESS
     };
   }
+
+  async refreshToken({
+    user_id,
+    refresh_token,
+    verify
+  }: {
+    user_id: string;
+    refresh_token: string;
+    verify: UserVerifyStatus;
+  }) {
+    const [new_access_token, new_refresh_token] = await this.signAccessAndRefreshToken({ user_id, verify });
+    databaseService.refreshTokens.deleteOne({ token: refresh_token });
+    databaseService.refreshTokens.insertOne(
+      new RefreshToken({ user_id: new ObjectId(user_id), token: new_refresh_token })
+    );
+    return {
+      access_token: new_access_token,
+      refresh_token: new_refresh_token
+    };
+  }
+
+  async changePassword(user_id: string, password: string) {
+    await databaseService.users.updateOne(
+      { _id: new ObjectId(user_id) },
+      {
+        $set: {
+          password: hashPassword(password)
+        },
+        $currentDate: {
+          updated_at: true
+        }
+      }
+    );
+    return {
+      message: USERS_MESSAGES.CHAGE_PASSWORD_SUCCESS
+    }
+  }
 }
 
 const usersService = new UsersService();

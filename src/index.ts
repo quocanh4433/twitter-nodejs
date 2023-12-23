@@ -8,6 +8,7 @@ import { config } from 'dotenv';
 import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from './constants/dir';
 import staticRouter from './routes/static.routes';
 import tweetRouter from './routes/tweet.routes';
+import bookmarkRouter from './routes/bookmark.routes';
 
 config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use('/users', usersRouter);
 app.use('/medias', mediaRouter);
 app.use('/tweets', tweetRouter);
+app.use('/bookmarks', bookmarkRouter);
 app.use('/static', staticRouter);
 // app.use('/static', express.static(UPLOAD_IMAGE_DIR));
 // app.use('/static/videos', express.static(UPLOAD_VIDEO_DIR));

@@ -4,6 +4,8 @@ import { User } from '~/models/schemas/User.schema';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import Follower from '~/models/schemas/Follower.schema';
 import Tweet from '~/models/schemas/Tweet.schema';
+import { HashTag } from '~/models/schemas/HashTags.schemas';
+import { Bookmark } from '~/models/schemas/Bookmark.schemas';
 
 config();
 
@@ -38,6 +40,14 @@ class DatabaseService {
 
   get tweets(): Collection<Tweet> {
     return this.db.collection(`${process.env.DB_TWEETS_COLLECTION}`);
+  }
+
+  get hashTags(): Collection<HashTag> {
+    return this.db.collection(`${process.env.DB_HASHTAGS_COLLECTION}`);
+  }
+
+  get bookmarks(): Collection<Bookmark> {
+    return this.db.collection(`${process.env.DB_BOOKMARKS_COLLECTION}`);
   }
 
   get followers(): Collection<Follower> {

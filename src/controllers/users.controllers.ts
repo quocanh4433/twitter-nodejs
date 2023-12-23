@@ -131,8 +131,8 @@ export const refreshTokenController = async (
   res: Response
 ) => {
   const { refresh_token } = req.body;
-  const { user_id, verify } = req.decode_refresh_token as TokenPayload;
-  const result = await usersService.refreshToken({ user_id, verify, refresh_token });
+  const { user_id, verify, exp, iat } = req.decode_refresh_token as TokenPayload;
+  const result = await usersService.refreshToken({ user_id, verify, refresh_token, exp, iat });
   res.json({
     message: USERS_MESSAGES.REFRESH_TOKEN_SUCCESS,
     result
@@ -202,5 +202,5 @@ export const changePasswordController = async (req: Request, res: Response) => {
   const { user_id } = req.decode_authorization as TokenPayload;
   const { password } = req.body;
   const result = await usersService.changePassword(user_id, password);
-  res.json(result)
+  res.json(result);
 };

@@ -1,0 +1,27 @@
+import { Request } from 'express';
+import databaseService from './data.servieces';
+import Tweet from '~/models/schemas/Tweet.schema';
+import { ObjectId } from 'mongodb';
+import { TweetReqBody } from '~/models/requests/Tweet.request';
+
+class TweetService {
+  async createTweet(body: TweetReqBody, user_id: string) {
+    const result = await databaseService.tweets.insertOne(
+      new Tweet({
+        audience: body.audience,
+        content: body.content,
+        hashtags: [],
+        medias: [],
+        mentions: body.mentions,
+        parent_id: body.parent_id,
+        type: body.type,
+        user_id: new ObjectId(user_id)
+      })
+    );
+    const tweet = await databaseService.tweets.findOne({ _id: new ObjectId(result.insertedId) });
+    return tweet;
+  }
+}
+
+const tweetService = new TweetService();
+export default tweetService;

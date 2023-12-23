@@ -421,7 +421,7 @@ class UsersService {
     refresh_token: string;
     verify: UserVerifyStatus;
     exp: number;
-    iat: number
+    iat: number;
   }) {
     const [new_access_token, new_refresh_token] = await this.signAccessAndRefreshToken({ user_id, verify, exp: exp });
     databaseService.refreshTokens.deleteOne({ token: refresh_token });

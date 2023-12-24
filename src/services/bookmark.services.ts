@@ -5,7 +5,7 @@ import { Bookmark } from '~/models/schemas/Bookmark.schemas';
 
 class BookmarkService {
   async bookmark(user_id: string, tweet_id: string) {
-    const result = await databaseService.bookmarks.findOneAndUpdate(
+    await databaseService.bookmarks.findOneAndUpdate(
       { user_id: new ObjectId(user_id) },
       {
         $setOnInsert: new Bookmark({
@@ -17,7 +17,9 @@ class BookmarkService {
         upsert: true
       }
     );
-    return result;
+    return {
+      message: BOOKMARK_MESSAGES.BOOKMARK_SUCCESSFULLY
+    };
   }
 
   async unbookmark(user_id: string, tweet_id: string) {

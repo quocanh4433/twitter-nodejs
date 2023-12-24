@@ -1,13 +1,16 @@
 import { checkSchema } from 'express-validator';
-import { TWEET_MESSAGES } from '~/constants/messages';
+import { TWEET_MESSAGES, USERS_MESSAGES } from '~/constants/messages';
 import { validate } from '~/utils/validation';
 import { ObjectId } from 'mongodb';
-import { MediaType, TweetAudience, TweetType } from '~/constants/enums';
+import { MediaType, TweetAudience, TweetType, UserVerifyStatus } from '~/constants/enums';
 import { isEmpty } from 'lodash';
 import { enumToArrayValue } from '~/utils/common';
 import databaseService from '~/services/data.servieces';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';
+import { NextFunction, Request, Response } from 'express';
+import Tweet from '~/models/schemas/Tweet.schema';
+import { TokenPayload } from '~/models/requests/User.request';
 
 const tweetTypes = enumToArrayValue(TweetType);
 const tweetAudiences = enumToArrayValue(TweetAudience);
@@ -118,12 +121,13 @@ export const tweetIdValidator = validate(
           errorMessage: TWEET_MESSAGES.INVALID_TWEET_ID
         },
         custom: {
-          options: async (value) => {
+          options: async (value, { req }) => {
             const tweet = await databaseService.tweets.findOne({ _id: new ObjectId(value) });
 
             if (!tweet) {
               throw new ErrorWithStatus({ message: TWEET_MESSAGES.TWEET_NOT_FOUND, status: HTTP_STATUS.NOT_FOUND });
             }
+            (req as Request).tweet = tweet;
             return true;
           }
         }
@@ -132,3 +136,38 @@ export const tweetIdValidator = validate(
     ['body', 'params']
   )
 );
+
+export const audienceValidtor = async (req: Request, res: Response, next: NextFunction) => {
+  const tweet = req.tweet as Tweet;
+  if (tweet.audience === TweetAudience.TwitterCircle) {
+    // Kiem tra nguoi xem tweet da login hay chua?
+    if (!req.decode_authorization) {
+      throw new ErrorWithStatus({
+        message: USERS_MESSAGES.USER_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
+
+    // Tac gia cua bai tweet
+    const author = await databaseService.users.findOne({ _id: new ObjectId(tweet.user_id) });
+
+    // Kiem tra tai khoan cuar tac gia bai tweet con hoat dong hoac bi khoa hay khong?
+    if (!author || author.verify === UserVerifyStatus.Banned) {
+      throw new ErrorWithStatus({
+        message: USERS_MESSAGES.USER_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
+
+    // Kiem tra nguoi xem co trong tweet circle cua tac gia hay khong?
+    const { user_id } = req.decode_authorization as TokenPayload;
+    const isInTweetCircle = author.twitter_circle?.some((user_circle_id) => user_circle_id.equals(user_id));
+    if (!isInTweetCircle && !author._id.equals(user_id)) {
+      throw new ErrorWithStatus({
+        message: TWEET_MESSAGES.TWEET_IS_NOT_PUBLIC,
+        status: HTTP_STATUS.FORBIDDEN
+      });
+    }
+  }
+  next();
+};

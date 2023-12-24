@@ -26,10 +26,8 @@ class TweetService {
 
   async getTweet(tweet_id: string, user_id: string) {
     const result = await databaseService.tweets.findOne({
-      user_id: new ObjectId(user_id),
       _id: new ObjectId(tweet_id)
     });
-    console.log(result, user_id, tweet_id);
     return result;
   }
 

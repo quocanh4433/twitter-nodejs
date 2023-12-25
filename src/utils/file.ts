@@ -66,7 +66,6 @@ export const handleUploadVideo = (req: Request) => {
         return reject(new Error('File is not empty'));
       }
       const videos = files.video as File[];
-      console.log(videos);
       videos.forEach((video) => {
         const ext = getExtension(video.originalFilename as string);
         fs.renameSync(video.filepath, video.filepath + '.' + ext);

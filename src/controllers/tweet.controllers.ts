@@ -6,6 +6,7 @@ import tweetService from '~/services/tweets.services';
 import { TokenPayload } from '~/models/requests/User.request';
 import { TWEET_MESSAGES } from '~/constants/messages';
 import { TweetType } from '~/constants/enums';
+import { Pagination } from '~/models/requests/Pagination.requests';
 
 config();
 
@@ -54,6 +55,22 @@ export const getTweetChildrenController = async (req: Request, res: Response) =>
       limit,
       page,
       tweet_type,
+      totalPage
+    }
+  });
+};
+
+export const getNewFeedController = async (req: Request<ParamsDictionary, any, any, Pagination>, res: Response) => {
+  const limit = Number(req.query.limit as string);
+  const page = Number(req.query.page as string);
+  const { user_id } = req.decode_authorization as TokenPayload;
+  const { tweets, totalPage } = await tweetService.getNewFeed({ user_id, page, limit });
+  res.json({
+    message: TWEET_MESSAGES.GET_NEW_FEEDS_SUCCESSFULLY,
+    result: {
+      tweets,
+      limit,
+      page,
       totalPage
     }
   });

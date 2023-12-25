@@ -22,7 +22,7 @@ interface IUser {
   cover_photo?: string; // optional
 }
 
-export class User {
+export default class User {
   _id?: ObjectId;
   name: string;
   email: string;

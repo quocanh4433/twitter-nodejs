@@ -7,7 +7,7 @@ interface BookmarkType {
   created_at?: Date;
 }
 
-export class Bookmark {
+export default class Bookmark {
   _id: ObjectId;
   user_id: ObjectId;
   tweet_id: ObjectId;

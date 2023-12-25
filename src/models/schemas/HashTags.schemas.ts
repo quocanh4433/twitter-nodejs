@@ -6,7 +6,7 @@ interface HashTagType {
   created_at?: Date;
 }
 
-export class HashTag {
+export default class HashTag {
   _id?: ObjectId;
   name: string;
   created_at: Date;

@@ -1,7 +1,7 @@
 import databaseService from './data.servieces';
 import { ObjectId } from 'mongodb';
 import { BOOKMARK_MESSAGES } from '~/constants/messages';
-import { Bookmark } from '~/models/schemas/Bookmark.schemas';
+import Bookmark from '~/models/schemas/Bookmark.schemas';
 
 class BookmarkService {
   async bookmark(user_id: string, tweet_id: string) {

@@ -17,7 +17,7 @@ import { ParamsDictionary } from 'express-serve-static-core';
 import usersService from '~/services/users.services';
 import { USERS_MESSAGES } from '~/constants/messages';
 import { ObjectId } from 'mongodb';
-import { User } from '~/models/schemas/User.schema';
+import User from '~/models/schemas/User.schema';
 import databaseService from '~/services/data.servieces';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { UserVerifyStatus } from '~/constants/enums';

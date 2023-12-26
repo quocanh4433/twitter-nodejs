@@ -94,3 +94,8 @@ export const BOOKMARK_MESSAGES = {
   BOOKMARK_SUCCESSFULLY: 'Bookmark successfully',
   UNBOOKMARK_SUCCESSFULLY: 'Unbookmark successfully'
 };
+
+export const SEARCH_MESSAGES = {
+  CONTENT_MUST_BE_STRING: 'Content must be string',
+  MEDIA_TYPE_MUST_BE_ONE_OF: 'Media type must be one of'
+};

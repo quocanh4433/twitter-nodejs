@@ -1,4 +1,3 @@
-import { Request } from 'express';
 import databaseService from './data.servieces';
 import Tweet from '~/models/schemas/Tweet.schema';
 import { ObjectId, WithId } from 'mongodb';
@@ -223,7 +222,7 @@ class TweetService {
     });
 
     // Calculation total page
-    const totalPage = Math.ceil(totalDocument / limit);
+    const totalPage = Math.ceil(totalDocument / limit) ?? 1;
     return { tweets, totalPage };
   }
 
@@ -279,11 +278,21 @@ class TweetService {
             {
               $and: [
                 {
+                  audience: 1
+                },
+                {
+                  user_id: new ObjectId(user_id)
+                }
+              ]
+            },
+            {
+              $and: [
+                {
                   audience: TweetAudience.TwitterCircle
                 },
                 {
-                  user_id: {
-                    $eq: user_id_obj
+                  'author_by_user_id.twitter_circle': {
+                    $in: [new ObjectId(user_id)]
                   }
                 }
               ]
@@ -425,7 +434,7 @@ class TweetService {
     });
 
     // Calculation total page
-    const totalPage = Math.ceil(totalDocument.total / limit);
+    const totalPage = Math.ceil(totalDocument.total / limit) ?? 1;
     return { tweets, totalPage };
   }
 }

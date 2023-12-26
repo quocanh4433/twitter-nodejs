@@ -13,7 +13,13 @@ export enum TokenType {
 
 export enum MediaType {
   Image,
-  Video
+  Video,
+  HLS
+}
+
+export enum MediaTypeQuery {
+  Image = 'image',
+  Video = 'video'
 }
 
 export enum TweetAudience {
@@ -26,4 +32,9 @@ export enum TweetType {
   Retweet,
   Comment,
   QuoteTweet
+}
+
+export enum PeopleFollow {
+  Anyone = '0',
+  Foloowing = '1'
 }

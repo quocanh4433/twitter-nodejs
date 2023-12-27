@@ -57,7 +57,7 @@ export const verifyEmailTokenController = async (
   req: Request<ParamsDictionary, any, VerifyEmailReqBody>,
   res: Response
 ) => {
-  const { user_id, token } = req.decode_verify_email_token as TokenPayload;
+  const { user_id } = req.decode_verify_email_token as TokenPayload;
   const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
 
   if (!user) {
@@ -80,7 +80,7 @@ export const verifyEmailTokenController = async (
 };
 
 export const resendVerifyEmailTokenController = async (req: Request, res: Response) => {
-  const { user_id, verify } = req.decode_authorization as TokenPayload;
+  const { user_id } = req.decode_authorization as TokenPayload;
   const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
   if (!user) {
     res.status(HTTP_STATUS.NOT_FOUND).json({
@@ -94,7 +94,7 @@ export const resendVerifyEmailTokenController = async (req: Request, res: Respon
     });
   }
 
-  const result = await usersService.resendVerifyEmail(user_id);
+  const result = await usersService.resendVerifyEmail(user_id, (user as User).email);
   return res.json(result);
 };
 
@@ -102,10 +102,11 @@ export const forgotPasswordController = async (
   req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
   res: Response
 ) => {
-  const { _id, verify } = req.user as User;
+  const { _id, verify, email } = req.user as User;
   const result = await usersService.forgotPassword({
     user_id: (_id as ObjectId)?.toString(),
-    verify: verify as UserVerifyStatus
+    verify: verify as UserVerifyStatus,
+    email
   });
   res.json(result);
 };

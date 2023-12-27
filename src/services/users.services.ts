@@ -12,6 +12,7 @@ import HTTP_STATUS from '~/constants/httpStatus';
 import { ErrorWithStatus } from '~/models/Error';
 import Follower from '~/models/schemas/Follower.schema';
 import axios from 'axios';
+import { sendForgotPasswordEmail, sendVerifyRegisterEmail } from '~/utils/email';
 
 config();
 
@@ -148,6 +149,7 @@ class UsersService {
     databaseService.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, exp, iat })
     );
+    await sendVerifyRegisterEmail(payload.email, email_verify_token);
     return {
       access_token,
       refresh_token
@@ -251,10 +253,11 @@ class UsersService {
     };
   }
 
-  async resendVerifyEmail(user_id: string) {
+  async resendVerifyEmail(user_id: string, email: string) {
     const email_verify_token = await this.signVerifyEmailToken({ user_id, verify: UserVerifyStatus.Unverified });
-    // Resend verify email
-    console.log('Resend verify email success: ', email_verify_token);
+
+    // Send verify email
+    await sendVerifyRegisterEmail(email, email_verify_token);
 
     // Update verify_email_token
     await databaseService.users.updateOne(
@@ -274,7 +277,7 @@ class UsersService {
     };
   }
 
-  async forgotPassword({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  async forgotPassword({ user_id, verify, email }: { user_id: string; verify: UserVerifyStatus; email: string }) {
     const forgot_password_token = await this.signForgotPasswordToken({ user_id, verify });
     await databaseService.users.updateOne(
       { _id: new ObjectId(user_id) },
@@ -289,7 +292,7 @@ class UsersService {
     );
 
     // Send email attach link "https:/twitter.com/forgot-pasword?token=...."
-    console.log('forgot_password_token: ', forgot_password_token);
+    await sendForgotPasswordEmail(email, forgot_password_token);
 
     return {
       message: USERS_MESSAGES.CHECK_EMAIL_TO_FORGOT_PASSWORD_SUCCESS

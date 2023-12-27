@@ -10,7 +10,7 @@ import staticRouter from './routes/static.routes';
 import tweetRouter from './routes/tweet.routes';
 import bookmarkRouter from './routes/bookmark.routes';
 import searchRouter from './routes/search.routes';
-
+import './utils/s3';
 config();
 
 databaseService.connect();

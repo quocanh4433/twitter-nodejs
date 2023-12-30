@@ -144,7 +144,7 @@ export const getMeController = async (req: Request, res: Response) => {
   const { user_id } = req.decode_authorization as TokenPayload;
   const result = await usersService.getMe(user_id);
   res.json({
-    message: USERS_MESSAGES.GET_FROFILE_SUCCESS,
+    message: USERS_MESSAGES.GET_PROFILE_SUCCESS,
     result
   });
 };
@@ -173,7 +173,7 @@ export const getProfileController = async (req: Request<GetProfileReqParam>, res
     });
   }
   res.json({
-    message: USERS_MESSAGES.GET_FROFILE_SUCCESS,
+    message: USERS_MESSAGES.GET_PROFILE_SUCCESS,
     result: user
   });
 };

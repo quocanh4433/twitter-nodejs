@@ -11,15 +11,36 @@ import tweetRouter from './routes/tweet.routes';
 import bookmarkRouter from './routes/bookmark.routes';
 import searchRouter from './routes/search.routes';
 import './utils/s3';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import cors from 'cors';
+
 config();
 
 databaseService.connect();
+
 const app = express();
 const port = process.env.PORT || 4000;
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+});
+const users: {
+  [key: string]: {
+    socket_id: string;
+  };
+} = {};
 
 initFolder();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:3000'
+  })
+);
 app.use('/users', usersRouter);
 app.use('/medias', mediaRouter);
 app.use('/tweets', tweetRouter);
@@ -30,6 +51,27 @@ app.use('/static', staticRouter);
 // app.use('/static/videos', express.static(UPLOAD_VIDEO_DIR));
 app.use(defaultErrorHandler);
 
-app.listen(port, () => {
+io.on('connection', (socket) => {
+  console.log(`user ${socket.id} connected`);
+  const user_id = socket.handshake.auth._id;
+  users[user_id] = {
+    socket_id: socket.id
+  };
+
+  socket.on('reciever private message', (data) => {
+    const reciever_user_id = users[data.to]?.socket_id;
+    socket.to(reciever_user_id).emit('private message', {
+      message: data.message,
+      from: user_id
+    });
+  });
+
+  socket.on('disconnect', () => {
+    delete users[user_id];
+    console.log(`${socket.id} disconnected`);
+  });
+});
+
+httpServer.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

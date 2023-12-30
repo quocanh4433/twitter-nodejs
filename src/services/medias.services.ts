@@ -51,7 +51,7 @@ class MediaService {
           contentType: mime.getType(file.filepath) as string
         });
 
-        fsPromise.unlink(file.filepath)
+        fsPromise.unlink(file.filepath);
 
         return {
           url: (s3Result as CompleteMultipartUploadCommandOutput).Location as string,

@@ -6,6 +6,7 @@ import Follower from '~/models/schemas/Follower.schema';
 import Tweet from '~/models/schemas/Tweet.schema';
 import HashTag from '~/models/schemas/HashTags.schemas';
 import Bookmark from '~/models/schemas/Bookmark.schemas';
+import Conversation from '~/models/schemas/Conversation.schema';
 
 config();
 
@@ -52,6 +53,10 @@ class DatabaseService {
 
   get followers(): Collection<Follower> {
     return this.db.collection(`${process.env.DB_FOLLOWERS_COLLECTION}`);
+  }
+
+  get conversations(): Collection<Conversation> {
+    return this.db.collection(process.env.DB_VIDEO_STATUS_CONVERSATION as string);
   }
 }
 

@@ -14,6 +14,9 @@ import './utils/s3';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import Conversation from './models/schemas/Conversation.schema';
+import conversationsRouter from './routes/conversation.routes';
+import { ObjectId } from 'mongodb';
 
 config();
 
@@ -46,6 +49,7 @@ app.use('/medias', mediaRouter);
 app.use('/tweets', tweetRouter);
 app.use('/search', searchRouter);
 app.use('/bookmarks', bookmarkRouter);
+app.use('/conversations', conversationsRouter);
 app.use('/static', staticRouter);
 // app.use('/static', express.static(UPLOAD_IMAGE_DIR));
 // app.use('/static/videos', express.static(UPLOAD_VIDEO_DIR));
@@ -58,9 +62,20 @@ io.on('connection', (socket) => {
     socket_id: socket.id
   };
 
-  socket.on('reciever private message', (data) => {
-    const reciever_user_id = users[data.to]?.socket_id;
-    socket.to(reciever_user_id).emit('private message', {
+  socket.on('reciever private message', async (data) => {
+    const reciever_socket_id = users[data.to]?.socket_id;
+
+    if (!reciever_socket_id) return;
+
+    await databaseService.conversations.insertOne(
+      new Conversation({
+        sender_id: new ObjectId(data.from),
+        receiver_id: new ObjectId(data.to),
+        content: data.message
+      })
+    );
+
+    socket.to(reciever_socket_id).emit('private message', {
       message: data.message,
       from: user_id
     });

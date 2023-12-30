@@ -3,7 +3,7 @@ import { Upload } from '@aws-sdk/lib-storage';
 import { config } from 'dotenv';
 import path from 'path';
 import { UPLOAD_IMAGE_DIR } from '~/constants/dir';
-import fs from 'fs'
+import fs from 'fs';
 
 config();
 const s3 = new S3({ region: process.env.AWS_REGION });

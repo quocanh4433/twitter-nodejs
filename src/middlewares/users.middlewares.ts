@@ -14,6 +14,7 @@ import { TokenPayload } from '~/models/requests/User.request';
 import { UserVerifyStatus } from '~/constants/enums';
 import { REGEX_USERNAME } from '~/constants/regex';
 import { capitalize } from 'lodash';
+import { verifyAccessToken } from '~/utils/common';
 
 const passwordSchema: ParamSchema = {
   trim: true,
@@ -159,7 +160,7 @@ const imageSchema: ParamSchema = {
   }
 };
 
-const userIdSchema: ParamSchema = {
+export const userIdSchema: ParamSchema = {
   custom: {
     options: async (value: string, { req }) => {
       if (!ObjectId.isValid(value)) {
@@ -269,25 +270,7 @@ export const accessTokenValidator = validate(
           options: async (value: string, { req }) => {
             const SPACE = ' ';
             const access_token = (value || '').split(SPACE)[1];
-            if (!access_token) {
-              throw new ErrorWithStatus({
-                message: USERS_MESSAGES.ACCESS_TOKEN_IS_REQUIRED,
-                status: HTTP_STATUS.UNAUTHORIZED
-              });
-            }
-            try {
-              const decode_authorization = await verifyToken({
-                token: access_token,
-                secretOrPublicKey: process.env.JWT_ACCESS_TOKEN_SECRET as string
-              });
-              (req as Request).decode_authorization = decode_authorization;
-            } catch (error) {
-              throw new ErrorWithStatus({
-                message: capitalize((error as JsonWebTokenError).message),
-                status: HTTP_STATUS.UNAUTHORIZED
-              });
-            }
-            return true;
+            return await verifyAccessToken(access_token, req as Request);
           }
         }
       }

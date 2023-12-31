@@ -23,6 +23,8 @@
     "@types/mime": "^3.0.4",
     "@types/minimist": "^1.2.5",
     "@types/node": "^20.10.5",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
     "eslint": "^8.55.0",
@@ -54,7 +56,10 @@
     "minimist": "^1.2.8",
     "mongodb": "^6.3.0",
     "sharp": "^0.33.1",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "yaml": "^2.3.4"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8",

@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { CONVERSATION_MESSAGES } from '~/constants/messages';
+import { GetConversationsParams } from '~/models/requests/Conversation.request';
 import { TokenPayload } from '~/models/requests/User.request';
 import conversationService from '~/services/conversations.services';
 
-export const getConversationsController = async (req: Request, res: Response) => {
+export const getConversationsController = async (req: Request<GetConversationsParams>, res: Response) => {
   const { user_id } = req.decode_authorization as TokenPayload;
   const { receiver_id, limit, page } = req.params;
   const result = await conversationService.getConversations({

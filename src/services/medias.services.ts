@@ -5,7 +5,6 @@ import { getNameFromFullName, handleUploadImage, handleUploadVideo } from '~/uti
 import path from 'path';
 import fs from 'fs';
 import fsPromise from 'fs/promises';
-import { isProduction } from '~/constants/config';
 import { MediaType } from '~/constants/enums';
 import { Media } from '~/models/Others';
 import { uploadFileToS3 } from '~/utils/s3';

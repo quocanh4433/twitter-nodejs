@@ -5,10 +5,10 @@ components:
       properties:
         email:
           type: string
-          example: duthanhduoc@gmail.com
+          example: qa44@gmail.com
         password:
           type: string
-          example: Duoc123!
+          example: Qa@123456
     SuccessAuthentication:
       type: object
       properties:

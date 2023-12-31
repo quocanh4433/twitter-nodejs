@@ -18,6 +18,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import YAML from 'yaml';
 import { envConfig } from './constants/config';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
 databaseService.connect();
 
@@ -32,12 +34,20 @@ const options: swaggerJsdoc.Options = {
       version: '1.0.0'
     }
   },
-  apis: ['./swaggers/*.yaml'] // files containing annotations as above
+  apis: ['./swagger/*.yaml'] // files containing annotations as above
 };
 const openapiSpecification = swaggerJsdoc(options);
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  standardHeaders: 'draft-7', // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+  legacyHeaders: false // Disable the `X-RateLimit-*` headers.
+  // store: ... , // Use an external store for consistency across multiple server instances.
+});
 
 initFolder();
 
+app.use(limiter)
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use('/users', usersRouter);
@@ -50,10 +60,10 @@ app.use('/static', staticRouter);
 // app.use('/static', express.static(UPLOAD_IMAGE_DIR));
 // app.use('/static/videos', express.static(UPLOAD_VIDEO_DIR));
 app.use(defaultErrorHandler);
+app.use(helmet());
 app.use(
   cors({
-    // origin: 'http://localhost:3000'
-    origin: '*'
+    origin: 'http://localhost:3000'
   })
 );
 

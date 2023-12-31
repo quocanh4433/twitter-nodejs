@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon --development",
+    "dev:stag": "npx nodemon --staging",
+    "dev:prod": "npx nodemon --production",
+
+    "start:dev": "node dist/index.js --development",
+    "start:stag": "node dist/index.js --staging",
+    "start:prod": "node dist/index.js --production",
+
     "build": "rimraf ./dist && tsc && tsc-alias",
-    "start": "node dist/index.js --production",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --check .",
@@ -48,8 +54,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
     "express-validator": "^7.0.1",
     "formidable": "^3.5.1",
+    "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mime": "^3.0.0",

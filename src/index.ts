@@ -4,7 +4,6 @@ import databaseService from './services/data.servieces';
 import { defaultErrorHandler } from './middlewares/error.middlewares';
 import mediaRouter from './routes/media.routes';
 import { initFolder } from './utils/file';
-import { config } from 'dotenv';
 import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from './constants/dir';
 import staticRouter from './routes/static.routes';
 import tweetRouter from './routes/tweet.routes';
@@ -18,13 +17,12 @@ import initSocket from './utils/socket';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import YAML from 'yaml';
-
-config();
+import { envConfig } from './constants/config';
 
 databaseService.connect();
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = envConfig.port;
 const httpServer = createServer(app);
 const options: swaggerJsdoc.Options = {
   definition: {

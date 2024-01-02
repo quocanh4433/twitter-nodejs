@@ -1,0 +1,8 @@
+version: '1.0.0'
+services:
+  twitter:
+    image: dev/twitter:v2
+    ports:
+      - '4000:4000'
+    volumes:
+      - '/Users/quocanh/Desktop/Twitter/twitter-server/uploads'

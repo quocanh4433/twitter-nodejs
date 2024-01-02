@@ -47,7 +47,7 @@ const limiter = rateLimit({
 
 initFolder();
 
-app.use(limiter)
+app.use(limiter);
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use('/users', usersRouter);

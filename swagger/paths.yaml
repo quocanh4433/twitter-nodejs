@@ -1,22 +1,4 @@
-openapi: 3.0.3
-info:
-  title: Swagger Petstore - OpenAPI 3.0
-  description: |-
-    This is a sample Pet Store Server based on the OpenAPI 3.0 specification.  You can find out more about
-    Swagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!
-    You can now help us improve the API whether it's by making changes to the definition itself or to the code.
-    That way, with time, we can improve the API in general, and expose some of the new features in OAS3.
-    _If you're looking for the Swagger 2.0/OAS 2.0 version of Petstore, then click [here](https://editor.swagger.io/?url=https://petstore.swagger.io/v2/swagger.yaml). Alternatively, you can load via the `Edit > Load Petstore OAS 2.0` menu option!_
-    Some useful links:
-    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
-    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
-  termsOfService: http://swagger.io/terms/
-  contact:
-    email: apiteam@swagger.io
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.11
+openapi: 3.0.3,
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
@@ -24,25 +6,27 @@ servers:
   - url: http://localhost:4000
 tags:
   - name: users
-    description: Các API liên quan đến người dùng twitter
+    description: API invole tiwtter user
+  - name: bookmark
+    description: API invole bookmark for tweet
 paths:
   /users/login:
     post:
       tags:
         - users
-      summary: Đăng nhập
-      description: Đăng nhập vào hệ thống x clone
+      summary: Login
+      description: Login
       operationId: login
       requestBody:
-        description: Thông tin đăng nhập
+        description: Login request body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginBody'
+              $ref: "#/components/schemas/LoginBody"
         required: true
       responses:
-        '200':
-          description: Đăng nhập thành công
+        "200":
+          description: Login successfully
           content:
             application/json:
               schema:
@@ -52,22 +36,460 @@ paths:
                     type: string
                     example: Login success
                   result:
-                    $ref: '#/components/schemas/SuccessAuthentication'
-        '422':
+                    $ref: "#/components/schemas/Authentication"
+        "422":
           description: Invalid input
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Register
+      description: Register
+      requestBody:
+        description: Register
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterBody"
+        required: true
+      responses:
+        "200":
+          description: Đăng ký thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Register success
+                  result:
+                    $ref: "#/components/schemas/SuccessAuthentication"
+        "400":
+          description: Đăng ký thất bại
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Register failed
+        "422":
+          description: Invalid Input
   /users/me:
     get:
       tags:
         - users
-      summary: Lấy thông tin user
-      description: Lấy thông tin user
+      summary: Get user info
+      description: Get user info
       operationId: getMe
       security:
         - BearerAuth: []
       responses:
         default:
-          description: Lấy thông tin user thành công
+          description: Get user info successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/User"
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: Logout
+      description: Logout
+      operationId: logout
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Logout
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh_token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU4NzBlZmEwYTU4NWViMjdkNDdlZTk4IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3MDkwMjAyODUsImV4cCI6MTcxNzY2MDI4NX0.91aHRvJ1rE9j78_jUgtx49d_CWjvTcbXEZfloOFGaCI
+        required: true
+      responses:
+        "200":
+          description: Logout success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logout successfully
+        "422":
+          description: Invalid input
+  /users/refresh-token:
+    post:
+      tags:
+        - users
+      summary: Refresh token
+      description: Refresh token
+      operationId: refresh token
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Refresh token
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Authentication"
+        required: true
+      responses:
+        "200":
+          description: Refresh token successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login success
+                  result:
+                    $ref: "#/components/schemas/Authentication"
+        "422":
+          description: Invalid input
+  /users/verify-email:
+    post:
+      tags:
+        - users
+      summary: Verify email
+      description: Verify email
+      operationId: verify email
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Verify email
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email_verify_token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU4NzBlZmEwYTU4NWViMjdkNDdlZTk4IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3MDkwMjAyODUsImV4cCI6MTcxNzY2MDI4NX0.91aHRvJ1rE9j78_jUgtx49d_CWjvTcbXEZfloOFGaCI
+        required: true
+      responses:
+        "200":
+          description: Verify email successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Verify email successfully
+        "422":
+          description: Invalid input
+  /users/resend-verify-email:
+    post:
+      tags:
+        - users
+      summary: Resend Verify email
+      description: Resend Verify email
+      operationId: resend verify email
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Resend Verify email
+        content:
+          application/json:
+            schema:
+              type: object
+        required: true
+      responses:
+        "200":
+          description: Resend verify email successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Resend verify email successfully
+        "422":
+          description: Invalid input
+  /users/forgot-password:
+    post:
+      tags:
+        - users
+      summary: Forgot password
+      description: Forgot password
+      operationId: forgot password
+      requestBody:
+        description: Forgot password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: email
+                  example: johncarter@gmail.com
+        required: true
+      responses:
+        "200":
+          description: Resend verify email successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Resend verify email successfully
+        "422":
+          description: Invalid input
+  /users/verify-forgot-password:
+    post:
+      tags:
+        - users
+      summary: Verify forgot password
+      description: Verify forgot password
+      operationId: verify forgot password
+      requestBody:
+        description: Verify forgot password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                forgot_password_token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU4NzBlZmEwYTU4NWViMjdkNDdlZTk4IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3MDkwMjAyODUsImV4cCI6MTcxNzY2MDI4NX0.91aHRvJ1rE9j78_jUgtx49d_CWjvTcbXEZfloOFGaCI
+        required: true
+      responses:
+        "200":
+          description: Verify forgot password successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Verify forgot password successfully
+        "422":
+          description: Invalid input
+  /users/reset-password:
+    post:
+      tags:
+        - users
+      summary: Reset password
+      description: Reset password
+      operationId: reset password
+      requestBody:
+        description: Reset password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                forgot_password_token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU4NzBlZmEwYTU4NWViMjdkNDdlZTk4IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3MDkwMjAyODUsImV4cCI6MTcxNzY2MDI4NX0.91aHRvJ1rE9j78_jUgtx49d_CWjvTcbXEZfloOFGaCI
+                confirm_password:
+                  type: string
+                  example: Qa@12345
+                password:
+                  type: string
+                  example: Qa@1234
+        required: true
+      responses:
+        "200":
+          description: Reset password successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reset password successfully
+        "422":
+          description: Invalid input
+  /users/change-password:
+    post:
+      tags:
+        - users
+      summary: Change password
+      description: Change password
+      operationId: change password
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Reset password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                  example: ab@123
+                confirm_password:
+                  type: string
+                  example: Qa@12345
+                password:
+                  type: string
+                  example: Qa@1234
+        required: true
+      responses:
+        "200":
+          description: Change password successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: Change password successfully
+        "422":
+          description: Invalid input
+  /users/{username}:
+    get:
+      tags:
+        - users
+      summary: Get profile by user name
+      description: Get profile by user name
+      operationId: get profile by user name
+      parameters:
+        - name: username
+          in: path
+          description: username
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Login successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get profile successfully
+        "422":
+          description: Invalid input
+  /users/follow:
+    post:
+      tags:
+        - users
+      summary: Follow
+      description: Follow
+      operationId: follow
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Follow password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                followed_user_id:
+                  type: MongoId
+                  example: 65854378d5ed1370b388486c
+        required: true
+      responses:
+        "200":
+          description: Follow successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Follow successfully
+        "422":
+          description: Invalid input
+  /users/follow/{user_id}:
+    delete:
+      tags:
+        - users
+      summary: Unfollow
+      description: Unfollow
+      operationId: unfollow
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          description: user_id
+          required: true
+          schema:
+            type: MongoId
+      responses:
+        "200":
+          description: Unfollow successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unfollow successfully
+        "422":
+          description: Invalid input
+  /users/update-profile:
+    patch:
+      tags:
+        - users
+      summary: Update profile
+      description: Update profile
+      operationId: Update profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Update profile request body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequestBodyUpdate"
+      responses:
+        "200":
+          description: Unfollow successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unfollow successfully
+        "422":
+          description: Invalid input
+  /bookmarks:
+    post:
+      tags:
+        - bookmark
+      summary: Bookmark
+      description: Bookmark
+      operationId: bookmark
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Bookmark request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tweet_id: 
+                  type: MongoId
+                  example: 6587a5abb1243e7fb1cc7cae
+
+      

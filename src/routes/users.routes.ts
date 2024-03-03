@@ -154,7 +154,7 @@ usersRouter.get('/me', accessTokenValidator, wrapRequestHandler(getMeController)
  * Body: UserSchema
  */
 usersRouter.patch(
-  '/me',
+  '/update-profile',
   accessTokenValidator,
   verifiedUserValidator,
   filterMiddleware<UpdateMeReqBody>([

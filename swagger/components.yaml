@@ -9,7 +9,25 @@ components:
         password:
           type: string
           example: Qa@123456
-    SuccessAuthentication:
+    RegisterBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Carter
+        email:
+          type: email
+          example: hoquocanh.td+99@gmail.com
+        password:
+          type: string
+          example: Qa@123456
+        confirm_password:
+          type: string
+          example: Qa@123456
+        date_of_birth:
+          type: ISO8601
+          example: 2023-06-08T10:17:31.096Z
+    Authentication:
       type: object
       properties:
         access_token:
@@ -18,6 +36,39 @@ components:
         refresh_token:
           type: string
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjRiZTBhZDJlNDNkMjQ2NDM5NGZlZWRiIiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE2OTEzODMyMjYsImV4cCI6MTcwMDAyMzIyNn0.bFnaBfxWl-Q48HCwAeMpNzZwTO9LEjcBd7Zyipjqr64
+    ProfileUpdateBody:
+      type: object
+    UserRequestBodyUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: johndoe@example.com
+        date_of_birth:
+          type: string
+          format: ISO8601
+          example: 2023-06-08T10:17:31.096Z
+        bio:
+          type: string
+          example: 'This is my bio.'
+        location:
+          type: string
+          example: 'San Francisco, CA'
+        website:
+          type: string
+          example: 'www.example.com'
+        username:
+          type: string
+          example: 'johndoe'
+        avatar:
+          type: string
+          example: 'http:localhost:4000/images/avatars/johndoe.jpg'
+        cover_photo:
+          type: string
+          example: 'http:localhost:4000/images/avatars/johndoe.jpg'
     User:
       type: object
       properties:
@@ -74,6 +125,15 @@ components:
       enum: [Unverified, Verified, Banned]
       example: 1
   securitySchemes:
+    oAuth2:  
+      type: oauth2
+      description: This API uses OAuth 2
+      flows:
+        implicit:
+          authorizationUrl: http://localhost:4000/users/auth/google
+          scopes:
+            read: read your account
+            write: modify your account
     BearerAuth:
       type: http
       scheme: bearer

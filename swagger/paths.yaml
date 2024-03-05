@@ -4,6 +4,7 @@ externalDocs:
   url: http://swagger.io
 servers:
   - url: http://localhost:4000
+  - url: http://localhost:4000
 tags:
   - name: users
     description: API invole tiwtter user
@@ -516,7 +517,41 @@ paths:
                     example: Bookmark successfully
         "422":
           description: Invalid input
-  
+    delete: 
+      tags:
+        - bookmark
+      summary: Unbookmark
+      description: Unbookmark
+      operationId: Unbookmark
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Unbookmark request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tweet_id: 
+                  type: MongoId
+                  example: 6587a5abb1243e7fb1cc7cae
+                user_id: 
+                  type: MongoId
+                  example: 657a91169f40eec3e9363239
+      responses:
+        "200":
+          description: Unbookmark successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unbookmark successfully
+        "422":
+          description: Invalid input
+      
   # Search
   /search:
     get:
@@ -920,7 +955,7 @@ paths:
                   result:
                     type: object
                     example: {
-                              "url": "https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/videos/e7b21c059caa8e183c788ab00.mp4",
+                              "url": "https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/9f67179812e66b659c704ff00.jpg",
                               "type": 1
                             }
         "422":

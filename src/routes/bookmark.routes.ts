@@ -10,7 +10,7 @@ const bookmarkRouter = Router();
  * Path: /
  * Method: POST
  * Headers: {Authorization: access_token}
- * Body: FormData { tweet_id: string}
+ * Body: { tweet_id: string, user_id: string}
  */
 bookmarkRouter.post(
   '/',
@@ -25,6 +25,7 @@ bookmarkRouter.post(
  * Path: /tweet/:tweet_id
  * Method: DELETE
  * Headers: {Authorization: access_token}
+ * Body: { tweet_id: string, user_id: string}
  */
 bookmarkRouter.delete(
   'tweet/:tweet_id',

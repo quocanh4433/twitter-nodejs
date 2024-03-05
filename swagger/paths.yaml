@@ -9,7 +9,17 @@ tags:
     description: API invole tiwtter user
   - name: bookmark
     description: API invole bookmark for tweet
+  - name: search
+    description: API invole search tweet
+  - name: conversation
+    description: API invole conversation
+  - name: tweets
+    description: API invole tweet
+  - name: medias
+    description: API invole upload file
 paths:
+
+  # User
   /users/login:
     post:
       tags:
@@ -472,6 +482,8 @@ paths:
                     example: Unfollow successfully
         "422":
           description: Invalid input
+  
+  # Bookmark
   /bookmarks:
     post:
       tags:
@@ -491,5 +503,425 @@ paths:
                 tweet_id: 
                   type: MongoId
                   example: 6587a5abb1243e7fb1cc7cae
+      responses:
+        "200":
+          description: Bookmark successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bookmark successfully
+        "422":
+          description: Invalid input
+  
+  # Search
+  /search:
+    get:
+      tags:
+        - search
+      summary: "Search tweet"
+      description: "Endpoint for search tweet"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: content
+          in: query
+          description: "search content"
+          required: true
+          type: string
+        - name: limit
+          in: query
+          description: "maximum number of items returned"
+          required: false
+          type: integer
+          default: 10
+        - name: page
+          in: query
+          description: "page"
+          required: false
+          type: integer
+          default: 1
+        - name: media_type
+          in: query
+          description: "media type: image or video"
+          required: false
+          type: object
+          properties:
+            media_type:
+              type: string
+              enum:
+                - video
+                - image
+          default: image
+      responses:
+        "200":
+          description: Search te successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Search successfully
+                  result:
+                    $ref: "#/components/schemas/Search"
+        "422":
+          description: Invalid input
+  
+  # Conversation
+  /conversations/receivers/{receiver_id}:
+    get:
+      tags:
+        - conversation
+      summary: "Get conversation"
+      description: "Get conversation"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: sender_id
+          in: query
+          description: "sender id"
+          required: true
+          type: MongoId
+          example: 65870efa0a585eb27d47ee98
+        - name: receiver_id
+          in: query
+          description: "receiver id"
+          required: true
+          type: MongoId
+          example: 65854378d5ed1370b388486c
+        - name: page
+          in: query
+          description: "page"
+          required: false
+          type: integer
+          example: 1
+        - name: limit
+          in: query
+          description: "maximum number of items returned"
+          required: false
+          type: integer
+          example: 10
+      responses:
+        "200":
+          description: Get conversation successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get conversation successfully
+                  result:
+                    $ref: "#/components/schemas/Conversation"
+        "422":
+          description: Invalid input
+  
+  # tweet
+  /tweets:
+    post:
+      tags:
+        - tweets
+      summary: "Create tweets"
+      description: "Create tweets"
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Create tweet body
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTweetBody"
+        required: true
+      responses:
+        "200":
+          description: Create tweet successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Create tweet successfully
+                  result:
+                    type: array
+                    example: [
+                      {
+                        "user_id": "65870efa0a585eb27d47ee98",
+                        "type": 0,
+                        "audience": 1,
+                        "content": "",
+                        "parent_id": null,
+                        "hashtags": [metoo, anti],
+                        "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                        "medias": [],
+                        "guest_views": 0,
+                        "user_views": 1,
+                        "created_at": "2023-12-24T05:55:26.482Z",
+                        "updated_at": "2023-12-25T04:37:22.013Z"
+                      }
+                    ]
+        "422":
+          description: Invalid input
+    
+    get:
+      tags:
+        - tweets
+      summary: "Get tweets"
+      description: "Get tweets"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: "maximum number of items returned"
+          required: false
+          type: integer
+          default: 10
+        - name: page
+          in: query
+          description: "page"
+          required: false
+          type: integer
+          default: 1
+      responses:
+        "200":
+          description: Get new feed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get new feed successfully
+                  result:
+                    type: object
+                    properties:
+                      tweets:
+                        type: array
+                        example: [
+                          {
+                            "user_id": "65870efa0a585eb27d47ee98",
+                            "type": 0,
+                            "audience": 1,
+                            "content": "",
+                            "parent_id": null,
+                            "hashtags": [metoo, anti],
+                            "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                            "medias": [],
+                            "guest_views": 0,
+                            "user_views": 1,
+                            "created_at": "2023-12-24T05:55:26.482Z",
+                            "updated_at": "2023-12-25T04:37:22.013Z"
+                          }
+                        ]
+                      totalPage:
+                        type: integer
+                        example: 3 
+                      limit:
+                        type: integer
+                        example: 10
+                      page:
+                        type: integer
+                        example: 1
+        "422":
+          description: Invalid input
+  /tweets/{tweet_id}/children:  
+    get: 
+      tags:
+        - tweets
+      summary: "Get tweets children"
+      description: "Get tweets children"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          description: maximum number of items returned
+          required: false
+          type: integer
+          default: 10
+        - name: page
+          in: query
+          description: "page"
+          required: false
+          type: integer
+          default: 1
+        - name: tweet_type
+          in: query
+          description: type of tweet
+          required: true
+          type: number
+          enum: [Tweet, Retweet, Comment, QuoteTweet]
+          default: 2
+      responses:
+        "200":
+          description: Get tweet children successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get tweet children successfully
+                  result:
+                    type: object
+                    properties:
+                      tweets:
+                        type: array
+                        example: [
+                          {
+                            "user_id": "65870efa0a585eb27d47ee98",
+                            "type": 0,
+                            "audience": 1,
+                            "content": "",
+                            "parent_id": null,
+                            "hashtags": [metoo, anti],
+                            "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                            "medias": [],
+                            "guest_views": 0,
+                            "user_views": 1,
+                            "created_at": "2023-12-24T05:55:26.482Z",
+                            "updated_at": "2023-12-25T04:37:22.013Z"
+                          }
+                        ]
+                      totalPage:
+                        type: integer
+                        example: 3 
+                      limit:
+                        type: integer
+                        example: 10
+                      page:
+                        type: integer
+                        example: 1
+                      tweet_type:
+                        type: integer
+                        example: 2
+        "422":
+          description: Invalid input
+  /tweets/{tweet_id}:
+    get: 
+      tags:
+        - tweets
+      summary: "Get tweets by tweet id"
+      description: "Get tweets by tweet id"
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: tweet_id
+          in: path
+          description: tweet id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Get tweet successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Get tweet successfully
+                  result:
+                    type: object
+                    example: {
+                            "user_id": "65870efa0a585eb27d47ee98",
+                            "type": 0,
+                            "audience": 1,
+                            "content": "",
+                            "parent_id": null,
+                            "hashtags": [metoo, anti],
+                            "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                            "medias": [],
+                            "guest_views": 0,
+                            "user_views": 1,
+                            "created_at": "2023-12-24T05:55:26.482Z",
+                            "updated_at": "2023-12-25T04:37:22.013Z"
+                          }
+        "422":
+          description: Invalid input
 
-      
+  # media
+  /medias/upload-image:
+    post:
+      tags:
+        - medias
+      summary: "Upload image"
+      description: "Upload image"
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Upload images successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Upload images successfully
+                  result:
+                    type: object
+                    example: {
+                              "url": "https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/9f67179812e66b659c704ff00.jpg",
+                              "type": 0
+                            }
+        "422":
+          description: Invalid input
+  /medias/upload-video:
+    post:
+      tags:
+        - medias
+      summary: "Upload video"
+      description: "Upload video"
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                video:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Upload videos successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Upload videos successfully
+                  result:
+                    type: object
+                    example: {
+                              "url": "https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/videos/e7b21c059caa8e183c788ab00.mp4",
+                              "type": 1
+                            }
+        "422":
+          description: Invalid input

@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import sharp from 'sharp';
 import { UPLOAD_IMAGE_DIR } from '~/constants/dir';
-import { getNameFromFullName, handleUploadImage, handleUploadVideo } from '~/utils/file';
+import { getExtension, getNameFromFullName, handleUploadImage, handleUploadVideo } from '~/utils/file';
 import path from 'path';
 import fs from 'fs';
 import fsPromise from 'fs/promises';
@@ -38,23 +38,24 @@ class MediaService {
     );
     return result;
   }
-
+  // /Users/quocanh/Desktop/Twitter/twitter-server/uploads/videos/temp/ed7bb637aa29b0904f4796500 videos/ed7bb637aa29b0904f4796500.mp4 null
   async uploadVideo(req: Request) {
     const files = await handleUploadVideo(req);
     const result: Media[] = await Promise.all(
       files.map(async (file) => {
-        console.log(file);
+        const ext = getExtension(file.originalFilename as string);
+
         const s3Result = await uploadFileToS3({
           fileName: 'videos/' + file.newFilename,
-          filePath: file.filepath,
-          contentType: mime.getType(file.filepath) as string
+          filePath: file.filepath + '.' + ext,
+          contentType: mime.getType(file.newFilename) as string
         });
 
-        fsPromise.unlink(file.filepath);
+        await fsPromise.unlink(file.filepath + '.' + ext);
 
         return {
           url: (s3Result as CompleteMultipartUploadCommandOutput).Location as string,
-          type: MediaType.Image
+          type: MediaType.Video
         };
       })
     );

@@ -46,7 +46,7 @@ export const handleUploadImage = (req: Request) => {
 export const handleUploadVideo = (req: Request) => {
   const form = formidable({
     maxFiles: 1,
-    uploadDir: UPLOAD_VIDEO_DIR,
+    uploadDir: UPLOAD_VIDEO_TEMP_DIR,
     maxFileSize: 50 * 1024 * 1024, // 50MB
     filter: ({ name, originalFilename, mimetype }) => {
       const valid = name === 'video' && Boolean(mimetype?.includes('mp4') || mimetype?.includes('quicktime'));
@@ -61,11 +61,13 @@ export const handleUploadVideo = (req: Request) => {
       if (err) {
         return reject(err);
       }
+
       // eslint-disable-next-line no-extra-boolean-cast
       if (!Boolean(files.video)) {
         return reject(new Error('File is not empty'));
       }
       const videos = files.video as File[];
+      
       videos.forEach((video) => {
         const ext = getExtension(video.originalFilename as string);
         fs.renameSync(video.filepath, video.filepath + '.' + ext);

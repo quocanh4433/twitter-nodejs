@@ -215,15 +215,15 @@ components:
               }
             ]
   securitySchemes:
-    oAuth2:
-      type: oauth2
-      description: This API uses OAuth 2
-      flows:
-        implicit:
-          authorizationUrl: http://localhost:4000/users/auth/google
-          scopes:
-            read: read your account
-            write: modify your account
+    # oAuth:
+    #   type: oauth2
+    #   description: This API uses OAuth 2
+    #   flows:
+    #     implicit:
+    #       authorizationUrl: http://localhost:4000/users/auth/google
+    #       scopes:
+    #         read: read your account
+    #         write: modify your account
     BearerAuth:
       type: http
       scheme: bearer

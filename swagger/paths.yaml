@@ -2,9 +2,6 @@ openapi: 3.0.3,
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
-servers:
-  - url: http://localhost:4000
-  - url: http://localhost:4000
 tags:
   - name: users
     description: API invole tiwtter user
@@ -18,6 +15,8 @@ tags:
     description: API invole tweet
   - name: medias
     description: API invole upload file
+  - name: likes
+    description: API invole upload like twwet
 paths:
   # User
   /users/login:
@@ -503,6 +502,9 @@ paths:
                 tweet_id:
                   type: MongoId
                   example: 6587a5abb1243e7fb1cc7cae
+                user_id:
+                  type: MongoId
+                  example: 65870efa0a585eb27d47ee98
       responses:
         '200':
           description: Bookmark successfully
@@ -516,6 +518,7 @@ paths:
                     example: Bookmark successfully
         '422':
           description: Invalid input
+  /bookmarks/tweet/{tweet_id}/:
     delete:
       tags:
         - bookmark
@@ -524,6 +527,12 @@ paths:
       operationId: Unbookmark
       security:
         - BearerAuth: []
+      parameters:
+        - name: tweet_id
+          in: path
+          description: 'tweet id'
+          required: true
+          type: string
       requestBody:
         description: Unbookmark request body
         content:
@@ -548,6 +557,84 @@ paths:
                   message:
                     type: string
                     example: Unbookmark successfully
+        '422':
+          description: Invalid input
+
+   # Like
+  /likes:
+    post:
+      tags:
+        - likes
+      summary: Like tweet
+      description: Like tweet
+      operationId: Like tweet
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Like tweet request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tweet_id:
+                  type: MongoId
+                  example: 6587a5abb1243e7fb1cc7cae
+                user_id:
+                  type: MongoId
+                  example: 65870efa0a585eb27d47ee98
+      responses:
+        '200':
+          description: Like tweet successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Like tweet successfully
+        '422':
+          description: Invalid input
+  /likes/tweet/{tweet_id}/:
+    delete:
+      tags:
+        - likes
+      summary: Unlike tweet
+      description: Unlike tweet
+      operationId: Unlike tweet
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: tweet_id
+          in: path
+          description: 'tweet id'
+          required: true
+          type: string
+      requestBody:
+        description: Unlike tweet request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tweet_id:
+                  type: MongoId
+                  example: 6587a5abb1243e7fb1cc7cae
+                user_id:
+                  type: MongoId
+                  example: 657a91169f40eec3e9363239
+      responses:
+        '200':
+          description: Unlike tweet successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unlike tweet successfully
         '422':
           description: Invalid input
 

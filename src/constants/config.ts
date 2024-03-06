@@ -38,6 +38,7 @@ export const envConfig = {
   dbHashTagsCollection: process.env.DB_HASHTAGS_COLLECTION,
   dbBookmarkCollection: process.env.DB_BOOKMARKS_COLLECTION,
   dbConversationCollection: process.env.DB_CONVERSATION_COLLECTION,
+  dbLikeCollection: process.env.DB_LIKE_COLLECTION,
 
   passwordSecret: process.env.PASSWORD_SECRET,
   jwtAccessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,

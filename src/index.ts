@@ -20,6 +20,7 @@ import YAML from 'yaml';
 import { envConfig } from './constants/config';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import likeRouter from './routes/like.routes';
 
 databaseService.connect();
 
@@ -55,6 +56,7 @@ app.use('/medias', mediaRouter);
 app.use('/tweets', tweetRouter);
 app.use('/search', searchRouter);
 app.use('/bookmarks', bookmarkRouter);
+app.use('/likes', likeRouter);
 app.use('/conversations', conversationsRouter);
 app.use('/static', staticRouter);
 // app.use('/static', express.static(UPLOAD_IMAGE_DIR));
@@ -66,7 +68,6 @@ app.use(
     origin: 'http://localhost:3000'
   })
 );
-
 
 initSocket(httpServer);
 

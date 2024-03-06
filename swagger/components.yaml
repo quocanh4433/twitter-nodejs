@@ -160,26 +160,27 @@ components:
       totalPage:
         type: integer
         example: 3
-      conversations: 
+      conversations:
         type: array
-        example: [
+        example:
+          [
             {
-                "_id": "658f9c4f58272e99bc66caba",
-                "sender_id": "65870efa0a585eb27d47ee98",
-                "receiver_id": "65854378d5ed1370b388486c",
-                "content": "hello 43",
-                "created_at": "2023-12-30T04:27:59.035Z",
-                "updated_at": "2023-12-30T04:27:59.035Z"
+              '_id': '658f9c4f58272e99bc66caba',
+              'sender_id': '65870efa0a585eb27d47ee98',
+              'receiver_id': '65854378d5ed1370b388486c',
+              'content': 'hello 43',
+              'created_at': '2023-12-30T04:27:59.035Z',
+              'updated_at': '2023-12-30T04:27:59.035Z'
             },
             {
-                "_id": "658f9c5358272e99bc66cabb",
-                "sender_id": "65854378d5ed1370b388486c",
-                "receiver_id": "65870efa0a585eb27d47ee98",
-                "content": "hi 44",
-                "created_at": "2023-12-30T04:28:03.468Z",
-                "updated_at": "2023-12-30T04:28:03.468Z"
+              '_id': '658f9c5358272e99bc66cabb',
+              'sender_id': '65854378d5ed1370b388486c',
+              'receiver_id': '65870efa0a585eb27d47ee98',
+              'content': 'hi 44',
+              'created_at': '2023-12-30T04:28:03.468Z',
+              'updated_at': '2023-12-30T04:28:03.468Z'
             }
-        ]
+          ]
     Search:
       type: object
       properties:
@@ -196,24 +197,25 @@ components:
           type: array
           items:
             type: object
-          example: [
-            {
-              "user_id": 65870efa0a585eb27d47ee98",
-              "type": 1,
-              "audience": 1,
-              "content": "",
-              "parent_id": "6587a5abb1243e7fb1cc7cae",
-              "hashtags": [],
-              "mentions": [],
-              "medias": [],
-              "guest_views": 0,
-              "user_views": 1,
-              "created_at": "2023-12-24T05:55:26.482Z",
-              "updated_at": "2023-12-25T04:37:22.013Z"
-            }
-          ]
+          example:
+            [
+              {
+                'user_id': 65870efa0a585eb27d47ee98",
+                'type': 1,
+                'audience': 1,
+                'content': '',
+                'parent_id': '6587a5abb1243e7fb1cc7cae',
+                'hashtags': [],
+                'mentions': [],
+                'medias': [],
+                'guest_views': 0,
+                'user_views': 1,
+                'created_at': '2023-12-24T05:55:26.482Z',
+                'updated_at': '2023-12-25T04:37:22.013Z'
+              }
+            ]
   securitySchemes:
-    oAuth2:  
+    oAuth2:
       type: oauth2
       description: This API uses OAuth 2
       flows:

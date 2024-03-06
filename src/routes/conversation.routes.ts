@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { getConversationsController } from '~/controllers/conversation.controllers';
 import { conversationValidator } from '~/middlewares/conversation.middlewares';
-import { paginateValidator } from '~/middlewares/tweets.midllewares';
+import { paginateValidator } from '~/middlewares/tweets.middlewares';
 import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/users.middlewares';
 
 const conversationsRouter = Router();

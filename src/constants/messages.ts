@@ -102,3 +102,8 @@ export const SEARCH_MESSAGES = {
 export const CONVERSATION_MESSAGES = {
   GET_CONVERSATION_SUCCESS: 'Get conversation successfully'
 };
+
+export const LIKE_MESSAGES = {
+  LIKE_SUCCESSFULLY: 'Like successfully',
+  UNLIKE_SUCCESSFULLY: 'Unlike successfully'
+};

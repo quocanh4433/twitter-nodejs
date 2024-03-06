@@ -11,7 +11,7 @@ import {
   getTweetChildrenValidator,
   paginateValidator,
   tweetIdValidator
-} from '~/middlewares/tweets.midllewares';
+} from '~/middlewares/tweets.middlewares';
 import { accessTokenValidator, verifiedUserValidator, isUserLoggedInValidator } from '~/middlewares/users.middlewares';
 import { wrapRequestHandler } from '~/utils/handlers';
 const tweetRouter = Router();

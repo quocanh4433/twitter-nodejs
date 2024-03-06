@@ -61,24 +61,32 @@ const sendVerifyEmail = (toAddress: string, subject: string, body: string) => {
     body,
     subject
   });
+  console.log('toAddress', toAddress)
+  console.log('envConfig.sesFromAddress', envConfig.sesFromAddress)
   return sesClient.send(sendEmailCommand);
 };
 
 const templateVerifyEmail = fs.readFileSync(path.resolve('src/template/verify-email.html'), 'utf8');
-export const sendVerifyRegisterEmail = (
+export const sendVerifyRegisterEmail = async (
   toAddress: string,
   email_verify_token: string,
   template: string = templateVerifyEmail
 ) => {
-  return sendVerifyEmail(
-    toAddress,
-    'Verify your email',
-    template
-      .replace('{{title}}', 'Please verify your email')
-      .replace('{{content}}', 'Click your button below to verify your email')
-      .replace('{{titleLink}}', 'Verify')
-      .replace('{{link}}', `${envConfig.clientUrl}/verify-email?token=${email_verify_token}`)
-  );
+  try {
+    const result = await sendVerifyEmail(
+      toAddress,
+      'Verify your email',
+      template
+        .replace('{{title}}', 'Please verify your email')
+        .replace('{{content}}', 'Click your button below to verify your email')
+        .replace('{{titleLink}}', 'Verify')
+        .replace('{{link}}', `${envConfig.clientUrl}/verify-email?token=${email_verify_token}`)
+    );
+    return result;
+  } catch (err) {
+    console.log('Errr', err);
+    return err;
+  }
 };
 
 export const sendForgotPasswordEmail = (

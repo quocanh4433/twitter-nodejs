@@ -19,7 +19,6 @@ tags:
   - name: medias
     description: API invole upload file
 paths:
-
   # User
   /users/login:
     post:
@@ -33,10 +32,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LoginBody"
+              $ref: '#/components/schemas/LoginBody'
         required: true
       responses:
-        "200":
+        '200':
           description: Login successfully
           content:
             application/json:
@@ -47,8 +46,8 @@ paths:
                     type: string
                     example: Login success
                   result:
-                    $ref: "#/components/schemas/Authentication"
-        "422":
+                    $ref: '#/components/schemas/Authentication'
+        '422':
           description: Invalid input
   /users/register:
     post:
@@ -61,11 +60,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RegisterBody"
+              $ref: '#/components/schemas/RegisterBody'
         required: true
       responses:
-        "200":
-          description: Đăng ký thành công
+        '200':
+          description: Register successfully
           content:
             application/json:
               schema:
@@ -75,9 +74,9 @@ paths:
                     type: string
                     example: Register success
                   result:
-                    $ref: "#/components/schemas/SuccessAuthentication"
-        "400":
-          description: Đăng ký thất bại
+                    $ref: '#/components/schemas/Authentication'
+        '400':
+          description: Register failed
           content:
             application/json:
               schema:
@@ -86,7 +85,7 @@ paths:
                   message:
                     type: string
                     example: Register failed
-        "422":
+        '422':
           description: Invalid Input
   /users/me:
     get:
@@ -103,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: '#/components/schemas/User'
   /users/logout:
     post:
       tags:
@@ -125,7 +124,7 @@ paths:
                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU4NzBlZmEwYTU4NWViMjdkNDdlZTk4IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3MDkwMjAyODUsImV4cCI6MTcxNzY2MDI4NX0.91aHRvJ1rE9j78_jUgtx49d_CWjvTcbXEZfloOFGaCI
         required: true
       responses:
-        "200":
+        '200':
           description: Logout success
           content:
             application/json:
@@ -135,7 +134,7 @@ paths:
                   message:
                     type: string
                     example: Logout successfully
-        "422":
+        '422':
           description: Invalid input
   /users/refresh-token:
     post:
@@ -151,10 +150,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Authentication"
+              $ref: '#/components/schemas/Authentication'
         required: true
       responses:
-        "200":
+        '200':
           description: Refresh token successfully
           content:
             application/json:
@@ -165,8 +164,8 @@ paths:
                     type: string
                     example: Login success
                   result:
-                    $ref: "#/components/schemas/Authentication"
-        "422":
+                    $ref: '#/components/schemas/Authentication'
+        '422':
           description: Invalid input
   /users/verify-email:
     post:
@@ -189,7 +188,7 @@ paths:
                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU4NzBlZmEwYTU4NWViMjdkNDdlZTk4IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3MDkwMjAyODUsImV4cCI6MTcxNzY2MDI4NX0.91aHRvJ1rE9j78_jUgtx49d_CWjvTcbXEZfloOFGaCI
         required: true
       responses:
-        "200":
+        '200':
           description: Verify email successfully
           content:
             application/json:
@@ -199,7 +198,7 @@ paths:
                   message:
                     type: string
                     example: Verify email successfully
-        "422":
+        '422':
           description: Invalid input
   /users/resend-verify-email:
     post:
@@ -218,7 +217,7 @@ paths:
               type: object
         required: true
       responses:
-        "200":
+        '200':
           description: Resend verify email successfully
           content:
             application/json:
@@ -228,7 +227,7 @@ paths:
                   message:
                     type: string
                     example: Resend verify email successfully
-        "422":
+        '422':
           description: Invalid input
   /users/forgot-password:
     post:
@@ -249,7 +248,7 @@ paths:
                   example: johncarter@gmail.com
         required: true
       responses:
-        "200":
+        '200':
           description: Resend verify email successfully
           content:
             application/json:
@@ -259,7 +258,7 @@ paths:
                   message:
                     type: string
                     example: Resend verify email successfully
-        "422":
+        '422':
           description: Invalid input
   /users/verify-forgot-password:
     post:
@@ -280,7 +279,7 @@ paths:
                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjU4NzBlZmEwYTU4NWViMjdkNDdlZTk4IiwidG9rZW5fdHlwZSI6MSwidmVyaWZ5IjoxLCJpYXQiOjE3MDkwMjAyODUsImV4cCI6MTcxNzY2MDI4NX0.91aHRvJ1rE9j78_jUgtx49d_CWjvTcbXEZfloOFGaCI
         required: true
       responses:
-        "200":
+        '200':
           description: Verify forgot password successfully
           content:
             application/json:
@@ -290,7 +289,7 @@ paths:
                   message:
                     type: string
                     example: Verify forgot password successfully
-        "422":
+        '422':
           description: Invalid input
   /users/reset-password:
     post:
@@ -317,7 +316,7 @@ paths:
                   example: Qa@1234
         required: true
       responses:
-        "200":
+        '200':
           description: Reset password successfully
           content:
             application/json:
@@ -327,7 +326,7 @@ paths:
                   message:
                     type: string
                     example: Reset password successfully
-        "422":
+        '422':
           description: Invalid input
   /users/change-password:
     post:
@@ -356,7 +355,7 @@ paths:
                   example: Qa@1234
         required: true
       responses:
-        "200":
+        '200':
           description: Change password successfully
           content:
             application/json:
@@ -364,7 +363,7 @@ paths:
                 type: object
                 properties:
                   message: Change password successfully
-        "422":
+        '422':
           description: Invalid input
   /users/{username}:
     get:
@@ -381,7 +380,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Login successfully
           content:
             application/json:
@@ -391,7 +390,7 @@ paths:
                   message:
                     type: string
                     example: Get profile successfully
-        "422":
+        '422':
           description: Invalid input
   /users/follow:
     post:
@@ -414,7 +413,7 @@ paths:
                   example: 65854378d5ed1370b388486c
         required: true
       responses:
-        "200":
+        '200':
           description: Follow successfully
           content:
             application/json:
@@ -424,7 +423,7 @@ paths:
                   message:
                     type: string
                     example: Follow successfully
-        "422":
+        '422':
           description: Invalid input
   /users/follow/{user_id}:
     delete:
@@ -443,7 +442,7 @@ paths:
           schema:
             type: MongoId
       responses:
-        "200":
+        '200':
           description: Unfollow successfully
           content:
             application/json:
@@ -453,7 +452,7 @@ paths:
                   message:
                     type: string
                     example: Unfollow successfully
-        "422":
+        '422':
           description: Invalid input
   /users/update-profile:
     patch:
@@ -469,9 +468,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRequestBodyUpdate"
+              $ref: '#/components/schemas/UserRequestBodyUpdate'
       responses:
-        "200":
+        '200':
           description: Unfollow successfully
           content:
             application/json:
@@ -481,9 +480,9 @@ paths:
                   message:
                     type: string
                     example: Unfollow successfully
-        "422":
+        '422':
           description: Invalid input
-  
+
   # Bookmark
   /bookmarks:
     post:
@@ -501,11 +500,11 @@ paths:
             schema:
               type: object
               properties:
-                tweet_id: 
+                tweet_id:
                   type: MongoId
                   example: 6587a5abb1243e7fb1cc7cae
       responses:
-        "200":
+        '200':
           description: Bookmark successfully
           content:
             application/json:
@@ -515,9 +514,9 @@ paths:
                   message:
                     type: string
                     example: Bookmark successfully
-        "422":
+        '422':
           description: Invalid input
-    delete: 
+    delete:
       tags:
         - bookmark
       summary: Unbookmark
@@ -532,14 +531,14 @@ paths:
             schema:
               type: object
               properties:
-                tweet_id: 
+                tweet_id:
                   type: MongoId
                   example: 6587a5abb1243e7fb1cc7cae
-                user_id: 
+                user_id:
                   type: MongoId
                   example: 657a91169f40eec3e9363239
       responses:
-        "200":
+        '200':
           description: Unbookmark successfully
           content:
             application/json:
@@ -549,39 +548,39 @@ paths:
                   message:
                     type: string
                     example: Unbookmark successfully
-        "422":
+        '422':
           description: Invalid input
-      
+
   # Search
   /search:
     get:
       tags:
         - search
-      summary: "Search tweet"
-      description: "Endpoint for search tweet"
+      summary: 'Search tweet'
+      description: 'Endpoint for search tweet'
       security:
         - BearerAuth: []
       parameters:
         - name: content
           in: query
-          description: "search content"
+          description: 'search content'
           required: true
           type: string
         - name: limit
           in: query
-          description: "maximum number of items returned"
+          description: 'maximum number of items returned'
           required: false
           type: integer
           default: 10
         - name: page
           in: query
-          description: "page"
+          description: 'page'
           required: false
           type: integer
           default: 1
         - name: media_type
           in: query
-          description: "media type: image or video"
+          description: 'media type: image or video'
           required: false
           type: object
           properties:
@@ -592,7 +591,7 @@ paths:
                 - image
           default: image
       responses:
-        "200":
+        '200':
           description: Search te successfully
           content:
             application/json:
@@ -603,46 +602,46 @@ paths:
                     type: string
                     example: Search successfully
                   result:
-                    $ref: "#/components/schemas/Search"
-        "422":
+                    $ref: '#/components/schemas/Search'
+        '422':
           description: Invalid input
-  
+
   # Conversation
   /conversations/receivers/{receiver_id}:
     get:
       tags:
         - conversation
-      summary: "Get conversation"
-      description: "Get conversation"
+      summary: 'Get conversation'
+      description: 'Get conversation'
       security:
         - BearerAuth: []
       parameters:
         - name: sender_id
           in: query
-          description: "sender id"
+          description: 'sender id'
           required: true
           type: MongoId
           example: 65870efa0a585eb27d47ee98
         - name: receiver_id
           in: query
-          description: "receiver id"
+          description: 'receiver id'
           required: true
           type: MongoId
           example: 65854378d5ed1370b388486c
         - name: page
           in: query
-          description: "page"
+          description: 'page'
           required: false
           type: integer
           example: 1
         - name: limit
           in: query
-          description: "maximum number of items returned"
+          description: 'maximum number of items returned'
           required: false
           type: integer
           example: 10
       responses:
-        "200":
+        '200':
           description: Get conversation successfully
           content:
             application/json:
@@ -653,17 +652,17 @@ paths:
                     type: string
                     example: Get conversation successfully
                   result:
-                    $ref: "#/components/schemas/Conversation"
-        "422":
+                    $ref: '#/components/schemas/Conversation'
+        '422':
           description: Invalid input
-  
+
   # tweet
   /tweets:
     post:
       tags:
         - tweets
-      summary: "Create tweets"
-      description: "Create tweets"
+      summary: 'Create tweets'
+      description: 'Create tweets'
       security:
         - BearerAuth: []
       requestBody:
@@ -671,10 +670,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateTweetBody"
+              $ref: '#/components/schemas/CreateTweetBody'
         required: true
       responses:
-        "200":
+        '200':
           description: Create tweet successfully
           content:
             application/json:
@@ -686,47 +685,48 @@ paths:
                     example: Create tweet successfully
                   result:
                     type: array
-                    example: [
-                      {
-                        "user_id": "65870efa0a585eb27d47ee98",
-                        "type": 0,
-                        "audience": 1,
-                        "content": "",
-                        "parent_id": null,
-                        "hashtags": [metoo, anti],
-                        "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
-                        "medias": [],
-                        "guest_views": 0,
-                        "user_views": 1,
-                        "created_at": "2023-12-24T05:55:26.482Z",
-                        "updated_at": "2023-12-25T04:37:22.013Z"
-                      }
-                    ]
-        "422":
+                    example:
+                      [
+                        {
+                          'user_id': '65870efa0a585eb27d47ee98',
+                          'type': 0,
+                          'audience': 1,
+                          'content': '',
+                          'parent_id': null,
+                          'hashtags': [metoo, anti],
+                          'mentions': [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                          'medias': [],
+                          'guest_views': 0,
+                          'user_views': 1,
+                          'created_at': '2023-12-24T05:55:26.482Z',
+                          'updated_at': '2023-12-25T04:37:22.013Z'
+                        }
+                      ]
+        '422':
           description: Invalid input
-    
+
     get:
       tags:
         - tweets
-      summary: "Get tweets"
-      description: "Get tweets"
+      summary: 'Get tweets'
+      description: 'Get tweets'
       security:
         - BearerAuth: []
       parameters:
         - name: limit
           in: query
-          description: "maximum number of items returned"
+          description: 'maximum number of items returned'
           required: false
           type: integer
           default: 10
         - name: page
           in: query
-          description: "page"
+          description: 'page'
           required: false
           type: integer
           default: 1
       responses:
-        "200":
+        '200':
           description: Get new feed successfully
           content:
             application/json:
@@ -741,39 +741,40 @@ paths:
                     properties:
                       tweets:
                         type: array
-                        example: [
-                          {
-                            "user_id": "65870efa0a585eb27d47ee98",
-                            "type": 0,
-                            "audience": 1,
-                            "content": "",
-                            "parent_id": null,
-                            "hashtags": [metoo, anti],
-                            "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
-                            "medias": [],
-                            "guest_views": 0,
-                            "user_views": 1,
-                            "created_at": "2023-12-24T05:55:26.482Z",
-                            "updated_at": "2023-12-25T04:37:22.013Z"
-                          }
-                        ]
+                        example:
+                          [
+                            {
+                              'user_id': '65870efa0a585eb27d47ee98',
+                              'type': 0,
+                              'audience': 1,
+                              'content': '',
+                              'parent_id': null,
+                              'hashtags': [metoo, anti],
+                              'mentions': [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                              'medias': [],
+                              'guest_views': 0,
+                              'user_views': 1,
+                              'created_at': '2023-12-24T05:55:26.482Z',
+                              'updated_at': '2023-12-25T04:37:22.013Z'
+                            }
+                          ]
                       totalPage:
                         type: integer
-                        example: 3 
+                        example: 3
                       limit:
                         type: integer
                         example: 10
                       page:
                         type: integer
                         example: 1
-        "422":
+        '422':
           description: Invalid input
-  /tweets/{tweet_id}/children:  
-    get: 
+  /tweets/{tweet_id}/children:
+    get:
       tags:
         - tweets
-      summary: "Get tweets children"
-      description: "Get tweets children"
+      summary: 'Get tweets children'
+      description: 'Get tweets children'
       security:
         - BearerAuth: []
       parameters:
@@ -785,7 +786,7 @@ paths:
           default: 10
         - name: page
           in: query
-          description: "page"
+          description: 'page'
           required: false
           type: integer
           default: 1
@@ -797,7 +798,7 @@ paths:
           enum: [Tweet, Retweet, Comment, QuoteTweet]
           default: 2
       responses:
-        "200":
+        '200':
           description: Get tweet children successfully
           content:
             application/json:
@@ -812,25 +813,26 @@ paths:
                     properties:
                       tweets:
                         type: array
-                        example: [
-                          {
-                            "user_id": "65870efa0a585eb27d47ee98",
-                            "type": 0,
-                            "audience": 1,
-                            "content": "",
-                            "parent_id": null,
-                            "hashtags": [metoo, anti],
-                            "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
-                            "medias": [],
-                            "guest_views": 0,
-                            "user_views": 1,
-                            "created_at": "2023-12-24T05:55:26.482Z",
-                            "updated_at": "2023-12-25T04:37:22.013Z"
-                          }
-                        ]
+                        example:
+                          [
+                            {
+                              'user_id': '65870efa0a585eb27d47ee98',
+                              'type': 0,
+                              'audience': 1,
+                              'content': '',
+                              'parent_id': null,
+                              'hashtags': [metoo, anti],
+                              'mentions': [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                              'medias': [],
+                              'guest_views': 0,
+                              'user_views': 1,
+                              'created_at': '2023-12-24T05:55:26.482Z',
+                              'updated_at': '2023-12-25T04:37:22.013Z'
+                            }
+                          ]
                       totalPage:
                         type: integer
-                        example: 3 
+                        example: 3
                       limit:
                         type: integer
                         example: 10
@@ -840,14 +842,14 @@ paths:
                       tweet_type:
                         type: integer
                         example: 2
-        "422":
+        '422':
           description: Invalid input
   /tweets/{tweet_id}:
-    get: 
+    get:
       tags:
         - tweets
-      summary: "Get tweets by tweet id"
-      description: "Get tweets by tweet id"
+      summary: 'Get tweets by tweet id'
+      description: 'Get tweets by tweet id'
       security:
         - BearerAuth: []
       parameters:
@@ -858,7 +860,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Get tweet successfully
           content:
             application/json:
@@ -870,21 +872,22 @@ paths:
                     example: Get tweet successfully
                   result:
                     type: object
-                    example: {
-                            "user_id": "65870efa0a585eb27d47ee98",
-                            "type": 0,
-                            "audience": 1,
-                            "content": "",
-                            "parent_id": null,
-                            "hashtags": [metoo, anti],
-                            "mentions": [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
-                            "medias": [],
-                            "guest_views": 0,
-                            "user_views": 1,
-                            "created_at": "2023-12-24T05:55:26.482Z",
-                            "updated_at": "2023-12-25T04:37:22.013Z"
-                          }
-        "422":
+                    example:
+                      {
+                        'user_id': '65870efa0a585eb27d47ee98',
+                        'type': 0,
+                        'audience': 1,
+                        'content': '',
+                        'parent_id': null,
+                        'hashtags': [metoo, anti],
+                        'mentions': [65870efa0a585eb27d47ee98, 6587c7e581f2ee4810c30b0b],
+                        'medias': [],
+                        'guest_views': 0,
+                        'user_views': 1,
+                        'created_at': '2023-12-24T05:55:26.482Z',
+                        'updated_at': '2023-12-25T04:37:22.013Z'
+                      }
+        '422':
           description: Invalid input
 
   # media
@@ -892,8 +895,8 @@ paths:
     post:
       tags:
         - medias
-      summary: "Upload image"
-      description: "Upload image"
+      summary: 'Upload image'
+      description: 'Upload image'
       security:
         - BearerAuth: []
       requestBody:
@@ -906,7 +909,7 @@ paths:
                   type: string
                   format: binary
       responses:
-        "200":
+        '200':
           description: Upload images successfully
           content:
             application/json:
@@ -918,18 +921,19 @@ paths:
                     example: Upload images successfully
                   result:
                     type: object
-                    example: {
-                              "url": "https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/9f67179812e66b659c704ff00.jpg",
-                              "type": 0
-                            }
-        "422":
+                    example:
+                      {
+                        'url': 'https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/9f67179812e66b659c704ff00.jpg',
+                        'type': 0
+                      }
+        '422':
           description: Invalid input
   /medias/upload-video:
     post:
       tags:
         - medias
-      summary: "Upload video"
-      description: "Upload video"
+      summary: 'Upload video'
+      description: 'Upload video'
       security:
         - BearerAuth: []
       requestBody:
@@ -942,7 +946,7 @@ paths:
                   type: string
                   format: binary
       responses:
-        "200":
+        '200':
           description: Upload videos successfully
           content:
             application/json:
@@ -954,9 +958,10 @@ paths:
                     example: Upload videos successfully
                   result:
                     type: object
-                    example: {
-                              "url": "https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/9f67179812e66b659c704ff00.jpg",
-                              "type": 1
-                            }
-        "422":
+                    example:
+                      {
+                        'url': 'https://twitter-nodejs-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/images/9f67179812e66b659c704ff00.jpg',
+                        'type': 1
+                      }
+        '422':
           description: Invalid input

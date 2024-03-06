@@ -131,6 +131,10 @@ class UsersService {
       user_id: user_id.toString(),
       verify
     });
+
+    const verifyEmail = await sendVerifyRegisterEmail(payload.email, email_verify_token);
+    console.log('verifyEmail', verifyEmail);
+
     await databaseService.users.insertOne(
       new User({
         ...payload,
@@ -147,7 +151,7 @@ class UsersService {
     databaseService.refreshTokens.insertOne(
       new RefreshToken({ user_id: new ObjectId(user_id), token: refresh_token, exp, iat })
     );
-    await sendVerifyRegisterEmail(payload.email, email_verify_token);
+
     return {
       access_token,
       refresh_token

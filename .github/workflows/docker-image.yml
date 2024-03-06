@@ -21,7 +21,6 @@ jobs:
       - name: Push the Docker image to Docker Hub
         run: docker push quocanh4433/twitter-nodejs:v2
 
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
